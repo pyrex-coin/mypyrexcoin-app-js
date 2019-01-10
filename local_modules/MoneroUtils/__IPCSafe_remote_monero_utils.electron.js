@@ -153,7 +153,7 @@ local_fns.isReady = false;
 module.exports = local_fns;
 //
 //
-const coreBridgeLoading_promise = require("../mymonero_core_js/monero_utils/MyMoneroCoreBridge")({asmjs: false}); // false because this will ever only be used where 'remote' is a node instance - which supports wasm
+const coreBridgeLoading_promise = require("../Pyrex-core-js/monero_utils/MyMoneroCoreBridge")({asmjs: false}); // false because this will ever only be used where 'remote' is a node instance - which supports wasm
 coreBridgeLoading_promise.then(function(this__coreBridge_instance)
 {
 	coreBridge_instance = this__coreBridge_instance;

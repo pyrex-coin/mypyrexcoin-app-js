@@ -33,12 +33,12 @@ const EventEmitter = require('events')
 const extend = require('util')._extend
 const uuidV1 = require('uuid/v1')
 //
-const monero_txParsing_utils = require('../../mymonero_core_js/monero_utils/monero_txParsing_utils')
-const monero_sendingFunds_utils = require('../../mymonero_core_js/monero_utils/monero_sendingFunds_utils')
-const JSBigInt = require('../../mymonero_core_js/cryptonote_utils/biginteger').BigInteger
-const monero_amount_format_utils = require('../../mymonero_core_js/monero_utils/monero_amount_format_utils')
-const monero_config = require('../../mymonero_core_js/monero_utils/monero_config')
-const mnemonic_languages = require('../../mymonero_core_js/cryptonote_utils/mnemonic_languages')
+const monero_txParsing_utils = require('../../Pyrex-core-js/monero_utils/monero_txParsing_utils')
+const monero_sendingFunds_utils = require('../../Pyrex-core-js/monero_utils/monero_sendingFunds_utils')
+const JSBigInt = require('../../Pyrex-core-js/cryptonote_utils/biginteger').BigInteger
+const monero_amount_format_utils = require('../../Pyrex-core-js/monero_utils/monero_amount_format_utils')
+const monero_config = require('../../Pyrex-core-js/monero_utils/monero_config')
+const mnemonic_languages = require('../../Pyrex-core-js/cryptonote_utils/mnemonic_languages')
 //
 const persistable_object_utils = require('../../DocumentPersister/persistable_object_utils')
 const wallet_persistence_utils = require('./wallet_persistence_utils')

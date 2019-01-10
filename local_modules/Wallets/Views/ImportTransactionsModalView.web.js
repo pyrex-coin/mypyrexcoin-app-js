@@ -37,8 +37,8 @@ const commonComponents_tooltips = require('../../MMAppUICommonComponents/tooltip
 //
 const WalletsSelectView = require('../../WalletsList/Views/WalletsSelectView.web')
 //
-const monero_amount_format_utils = require('../../mymonero_core_js/monero_utils/monero_amount_format_utils')
-const monero_sendingFunds_utils = require('../../mymonero_core_js/monero_utils/monero_sendingFunds_utils')
+const monero_amount_format_utils = require('../../Pyrex-core-js/monero_utils/monero_amount_format_utils')
+const monero_sendingFunds_utils = require('../../Pyrex-core-js/monero_utils/monero_sendingFunds_utils')
 //
 class ImportTransactionsModalView extends View
 {
