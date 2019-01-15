@@ -34,7 +34,7 @@ const JSBigInt = require('../Pyrex-core-js/cryptonote_utils/biginteger').BigInte
 //
 let ccySymbolsByCcy = exports.ccySymbolsByCcy = 
 {
-	XMR: "XMR", // included for completeness / convenience / API
+	PYX: "PYX", // included for completeness / convenience / API
 	USD: "USD",
 	AUD: "AUD",
 	BRL: "BRL",
@@ -58,7 +58,7 @@ let ccySymbolsByCcy = exports.ccySymbolsByCcy =
 }
 let allOrderedCurrencySymbols = exports.allOrderedCurrencySymbols = 
 [
-	ccySymbolsByCcy.XMR, // included for completeness / convenience / API
+	ccySymbolsByCcy.PYX, // included for completeness / convenience / API
 	ccySymbolsByCcy.USD,
 	ccySymbolsByCcy.AUD,
 	ccySymbolsByCcy.BRL,
@@ -82,11 +82,11 @@ let allOrderedCurrencySymbols = exports.allOrderedCurrencySymbols =
 ]
 let hasAtomicUnits = exports.hasAtomicUnits = function(ccySymbol) 
 {
-	return (ccySymbol == ccySymbolsByCcy.XMR)
+	return (ccySymbol == ccySymbolsByCcy.PYX)
 }
 let unitsForDisplay = exports.unitsForDisplay = function(ccySymbol)
 {
-	if (ccySymbol == ccySymbolsByCcy.XMR) {
+	if (ccySymbol == ccySymbolsByCcy.PYX) {
 		return monero_config.coinUnitPlaces
 	}
 	return 2
@@ -96,8 +96,8 @@ let nonAtomicCurrency_formattedString = exports.nonAtomicCurrency_formattedStrin
 	ccySymbol
 ) { // -> String
 	// is nonAtomic-unit'd currency a good enough way to categorize these? 
-	if (ccySymbol == ccySymbolsByCcy.XMR) {
-		throw "nonAtomicCurrency_formattedString not to be called with ccySymbol=.XMR"
+	if (ccySymbol == ccySymbolsByCcy.PYX) {
+		throw "nonAtomicCurrency_formattedString not to be called with ccySymbol=.PYX"
 	}
 	if (final_amountDouble == 0) {
 		return "0" // not 0.0
@@ -146,7 +146,7 @@ exports.submittableMoneroAmountDouble_orNull = function(
 		return null
 	}
 	let submittableAmountRawNumber = submittableAmountRawNumber_orNull
-	if (selectedCurrencySymbol == ccySymbolsByCcy.XMR) {
+	if (selectedCurrencySymbol == ccySymbolsByCcy.PYX) {
 		return submittableAmountRawNumber // identity rate - NOTE: this is also the RAW non-truncated amount
 	}
 	let xmrAmountDouble = rounded_ccyConversionRateCalculated_moneroAmountNumber(
@@ -189,7 +189,7 @@ const displayUnitsRounded_amountInCurrency = exports.displayUnitsRounded_amountI
 	if (typeof moneroAmountNumber != 'number') {
 		throw 'unexpected typeof moneroAmountNumber='+(typeof moneroAmountNumber)
 	}
-	if (ccySymbol == ccySymbolsByCcy.XMR) {
+	if (ccySymbol == ccySymbolsByCcy.PYX) {
 		return moneroAmountNumber // no conversion necessary
 	}
 	let xmrToCurrencyRate = CcyConversionRates_Controller_shared.rateFromXMR_orNullIfNotReady(
@@ -210,7 +210,7 @@ exports.displayStringComponentsFrom = function(
 	xmr_amount_JSBigInt, 
 	displayCcySymbol
 ) {
-	let XMR = ccySymbolsByCcy.XMR
+	let XMR = ccySymbolsByCcy.PYX
 	const xmr_amount_str = monero_amount_format_utils.formatMoney(xmr_amount_JSBigInt)
 	if (displayCcySymbol != XMR) {
 		// TODO: using doubles here is not very good, and must be replaced with JSBigInts to support small amounts

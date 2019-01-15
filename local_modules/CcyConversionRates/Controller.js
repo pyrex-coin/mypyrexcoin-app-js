@@ -71,7 +71,7 @@ class Controller extends EventEmitter
 	{
 		const self = this
 		//
-		if (ccySymbol == Currencies.ccySymbolsByCcy.XMR) {
+		if (ccySymbol == Currencies.ccySymbolsByCcy.PYX) {
 			throw "Invalid 'currency' argument value"
 		}
 		let rateValue_orNil = self.xmrToCcyRateJSNumbersByCcySymbols[ccySymbol]
@@ -83,7 +83,7 @@ class Controller extends EventEmitter
 	{
 		const self = this
 		//
-		if (ccySymbol == Currencies.ccySymbolsByCcy.XMR) {
+		if (ccySymbol == Currencies.ccySymbolsByCcy.PYX) {
 			throw "Invalid 'currency' argument value"
 		}
 		let rateValue_orNil = self.xmrToCcyRateJSNumbersByCcySymbols[ccySymbol] // which may be nil if the rate is not ready yet
@@ -141,7 +141,7 @@ class Controller extends EventEmitter
 			let numberOf_ccySymbols = ccySymbols.length
 			for (var i = 0 ; i < numberOf_ccySymbols ; i++) {
 				let ccySymbol = ccySymbols[i]
-				if (ccySymbol == Currencies.ccySymbolsByCcy.XMR) {
+				if (ccySymbol == Currencies.ccySymbolsByCcy.PYX) {
 					continue; // do not need to mock XMR<->XMR rate
 				}
 				let rateAsNumber = ratesBySymbol[ccySymbol]

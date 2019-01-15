@@ -292,7 +292,7 @@ class FundsRequestCellContentsView extends View
 		}
 		const colorHexString = is_displaying_local_wallet ? wallet_ifRecordForQRDisplay.swatch : fundsRequest.to_walletHexColorString
 		self.walletIconLayer.ConfigureWithHexColorString(colorHexString || "")
-		let ccy = fundsRequest.amountCcySymbol || "XMR"
+		let ccy = fundsRequest.amountCcySymbol || "PYX"
 		if (is_displaying_local_wallet) {
 			self.amountLayer.innerHTML = "To \"" + wallet_ifRecordForQRDisplay.walletLabel + "\""// TODO localize
 		} else {

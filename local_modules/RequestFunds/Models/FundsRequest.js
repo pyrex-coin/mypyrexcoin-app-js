@@ -176,7 +176,7 @@ class FundsRequest extends EventEmitter
 				console.error(errStr)
 				self.__setup_didFailToBoot(err)
 			}
-			// we *could* check if fullname and possibly XMR addr are empty/undef here but not much need/reason
+			// we *could* check if fullname and possibly PYX addr are empty/undef here but not much need/reason
 			// and might lead to awkward UX
 			//
 			// all done

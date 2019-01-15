@@ -354,7 +354,7 @@ class FundsRequestDetailsView extends View
 	{
 		const self = this
 		var value = "" // must use \r\n instead of \n for Windows
-		let ccy = self.fundsRequest.amountCcySymbol || "XMR"
+		let ccy = self.fundsRequest.amountCcySymbol || "PYX"
 		{
 			value += "Someone has requested a Monero payment"
 			if (self.fundsRequest.amount) {
@@ -372,9 +372,9 @@ class FundsRequestDetailsView extends View
 		}
 		value += "\r\n" // spacer
 		value += "\r\n---------------------------"
-		value += `\r\nIf you have MyMonero installed, use this link to send the funds: ${self.fundsRequest.Lazy_URI__addressAsAuthority()}`
+		value += `\r\nIf you have MyPyrexcoin installed, use this link to send the funds: ${self.fundsRequest.Lazy_URI__addressAsAuthority()}`
 		value += `\r\n`
-		value += `\r\nIf you don't have MyMonero installed, download it from ${"https://" + self.context.appDownloadLink_domainAndPath}`
+		value += `\r\nIf you don't have MyPyrexcoin installed, download it from ${"https://" + self.context.appDownloadLink_domainAndPath}`
 		//
 		return value
 	}
@@ -383,7 +383,7 @@ class FundsRequestDetailsView extends View
 		const self = this
 		var value = ""
 		//
-		let ccy = self.fundsRequest.amountCcySymbol || "XMR"
+		let ccy = self.fundsRequest.amountCcySymbol || "PYX"
 		value += "<p>"
 		{
 			value += "Someone has requested a Monero payment"
@@ -400,9 +400,9 @@ class FundsRequestDetailsView extends View
 			value += `<p>Description: "${self.fundsRequest.description}"</p>`
 		}
 		value += "<p>---------------------------</p>"
-		value += `<p>If you have MyMonero installed, <a href="${self.fundsRequest.Lazy_URI__addressAsAuthority()}">press this link to send the funds</a>.</p>`
+		value += `<p>If you have MyPyrexcoin installed, <a href="${self.fundsRequest.Lazy_URI__addressAsAuthority()}">press this link to send the funds</a>.</p>`
 		const appDownloadLink_domainAndPath = self.context.appDownloadLink_domainAndPath
-		value += `<p>If you don't have MyMonero installed, download it from <a href="https://${appDownloadLink_domainAndPath}">${appDownloadLink_domainAndPath}</a>.</p>`
+		value += `<p>If you don't have MyPyrexcoin installed, download it from <a href="https://${appDownloadLink_domainAndPath}">${appDownloadLink_domainAndPath}</a>.</p>`
 		//
 		return value
 	}

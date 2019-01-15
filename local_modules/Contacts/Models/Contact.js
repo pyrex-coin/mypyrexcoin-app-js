@@ -175,7 +175,7 @@ class Contact extends EventEmitter
 				console.error(errStr)
 				self.__setup_didFailToBoot(err)
 			}
-			// we *could* check if fullname and possibly XMR addr are empty/undef here but not much need/reason
+			// we *could* check if fullname and possibly PYX addr are empty/undef here but not much need/reason
 			// and might lead to awkward UX
 			//
 			// all done
@@ -251,7 +251,7 @@ class Contact extends EventEmitter
 	{
 		const self = this
 		//
-		return `${self.constructor.name}<${self._id}> "${self.emoji}  ${self.fullname}, XMR addr: ${self.address}, payment id: ${self.payment_id}".`
+		return `${self.constructor.name}<${self._id}> "${self.emoji}  ${self.fullname}, PYX addr: ${self.address}, payment id: ${self.payment_id}".`
 	}
 	//
 	EventName_booted()

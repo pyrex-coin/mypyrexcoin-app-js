@@ -40,7 +40,7 @@ let k_defaults_record =
 	specificAPIAddressURLAuthority: "",
 	appTimeoutAfterS: 2 * 60, // 2 mins
 	invisible_hasAgreedToTermsOfCalculatedEffectiveMoneroAmount: false,
-	displayCcySymbol: Currencies.ccySymbolsByCcy.XMR, // default
+	displayCcySymbol: Currencies.ccySymbolsByCcy.PYX, // default
 	authentication_requireWhenSending: true,
 	authentication_requireWhenDisclosingWalletSecrets: true,
 	autoDownloadUpdatesEnabled: true 

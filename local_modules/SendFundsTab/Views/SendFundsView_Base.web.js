@@ -298,7 +298,7 @@ class SendFundsView extends View
 		self.effectiveAmountLabelLayer = pkg.effectiveAmountLabelLayer // for configuration
 		{
 			const tooltipText = `Currency selector for<br/>display purposes only.<br/>The app will send ${
-				Currencies.ccySymbolsByCcy.XMR
+				Currencies.ccySymbolsByCcy.PYX
 			}.<br/><br/>Rate providers include<br/>${
 				rateServiceDomainText
 			}.`
@@ -322,7 +322,7 @@ class SendFundsView extends View
 			breakingDiv.appendChild(layer)
 		}
 		{
-			const tooltipText = "Based on Monero network<br/>fee estimate (not final).<br/><br/>MyMonero does not charge<br/>a transfer service fee."
+			const tooltipText = "Based on Monero network<br/>fee estimate (not final).<br/><br/>MyPyrexcoin does not charge<br/>a transfer service fee."
 			const view = commonComponents_tooltips.New_TooltipSpawningButtonView(tooltipText, self.context)
 			const layer = view.layer
 			breakingDiv.appendChild(layer)
@@ -965,7 +965,7 @@ class SendFundsView extends View
 		const xmr_estMaxAmount_str = monero_amount_format_utils.formatMoney(xmr_estMaxAmount)
 		//
 		const displayCcySymbol = self.ccySelectLayer.Component_selected_ccySymbol()
-		if (displayCcySymbol != Currencies.ccySymbolsByCcy.XMR) {
+		if (displayCcySymbol != Currencies.ccySymbolsByCcy.PYX) {
 			const xmr_estMaxAmountDouble = parseFloat(xmr_estMaxAmount_str)
 			let displayCurrencyAmountDouble_orNull = Currencies.displayUnitsRounded_amountInCurrency( 
 				self.context.CcyConversionRates_Controller_shared,
@@ -1006,7 +1006,7 @@ class SendFundsView extends View
 		let finalizable_ccySymbol = displayCcySymbol
 		var finalizable_formattedAmountString = estimatedTotalFee_str;//`${estimatedTotalFee_moneroAmountDouble}`
 		{
-			if (displayCcySymbol != Currencies.ccySymbolsByCcy.XMR) {
+			if (displayCcySymbol != Currencies.ccySymbolsByCcy.PYX) {
 				let displayCurrencyAmountDouble_orNull = Currencies.displayUnitsRounded_amountInCurrency( 
 					self.context.CcyConversionRates_Controller_shared,
 					displayCcySymbol,
@@ -1019,7 +1019,7 @@ class SendFundsView extends View
 						finalizable_ccySymbol
 					)
 				} else {
-					finalizable_ccySymbol = Currencies.ccySymbolsByCcy.XMR // and - special case - revert currency to .xmr while waiting on ccyConversion rate
+					finalizable_ccySymbol = Currencies.ccySymbolsByCcy.PYX // and - special case - revert currency to .xmr while waiting on ccyConversion rate
 				}
 			}
 		}
@@ -1061,8 +1061,8 @@ class SendFundsView extends View
 						rawInput_amount_Number
 					)
 					if (submittableMoneroAmountDouble_orNull == null) { // amt input exists but no converted amt found
-						if (selected_ccySymbol == Currencies.ccySymbolsByCcy.XMR) {
-							throw "null submittableMoneroAmountDouble_orNull while selected_ccySymbol=.XMR"
+						if (selected_ccySymbol == Currencies.ccySymbolsByCcy.PYX) {
+							throw "null submittableMoneroAmountDouble_orNull while selected_ccySymbol=.PYX"
 						}
 						isSubmittable = false // because we must be still loading the rate - so we want to explicitly /disable/ submission
 					}
@@ -1144,7 +1144,7 @@ class SendFundsView extends View
 		if (displayCcySymbol == null) {
 			throw "unexpectedly null displayCcySymbol"
 		}
-		let XMR = Currencies.ccySymbolsByCcy.XMR
+		let XMR = Currencies.ccySymbolsByCcy.PYX
 		if (selected_ccySymbol == XMR && displayCcySymbol == XMR) { // special case - no label necessary
 			__hideEffectiveAmountUI()
 			return
@@ -1156,9 +1156,9 @@ class SendFundsView extends View
 			rawInput_amount_Number
 		)
 		if (xmrAmountDouble_orNull == null) {
-			// but not empty … should have an amount… must be a non-XMR currency
+			// but not empty … should have an amount… must be a non-PYX currency
 			if (selected_ccySymbol == XMR) {
-				throw "Unexpected selected_ccySymbol=.XMR"
+				throw "Unexpected selected_ccySymbol=.PYX"
 			}
 			__convenience_setLoadingTextAndHideTooltip()
 			return
@@ -1167,7 +1167,7 @@ class SendFundsView extends View
 		var finalizable_text
 		if (selected_ccySymbol == XMR) {
 			if (displayCcySymbol == XMR) {
-				throw "Unexpected displayCurrency=.XMR"
+				throw "Unexpected displayCurrency=.PYX"
 			}
 			let displayCurrencyAmountDouble_orNull = Currencies.displayUnitsRounded_amountInCurrency( 
 				self.context.CcyConversionRates_Controller_shared,
@@ -1188,7 +1188,7 @@ class SendFundsView extends View
 			let moneroAmountDouble_atomicPlaces = xmrAmountDouble * Math.pow(10, monero_config.coinUnitPlaces)
 			let moneroAmount = new JSBigInt(moneroAmountDouble_atomicPlaces)
 			let formatted_moneroAmount = monero_amount_format_utils.formatMoney(moneroAmount)
-			finalizable_text = `= ${formatted_moneroAmount} ${Currencies.ccySymbolsByCcy.XMR}`
+			finalizable_text = `= ${formatted_moneroAmount} ${Currencies.ccySymbolsByCcy.PYX}`
 		}
 		let final_text = finalizable_text
 		__setTextOnAmountUI(
@@ -1208,7 +1208,7 @@ class SendFundsView extends View
 		if (self.context.settingsController.hasBooted != true) {
 			throw "_givenBootedSettingsController_setCcySelectLayer_initialValue called but !self.context.settingsController.hasBooted"
 		}
-		const amountCcy = self.context.settingsController.displayCcySymbol || "XMR"
+		const amountCcy = self.context.settingsController.displayCcySymbol || "PYX"
 		self.ccySelectLayer.value = amountCcy
 	}
 	_clearForm()
@@ -1492,7 +1492,7 @@ class SendFundsView extends View
 				payment_id = self.pickedContact.payment_id || null
 			}
 			if (!target_address || typeof target_address === 'undefined') {
-				_trampolineToReturnWithValidationErrorString("Contact unexpectedly lacked XMR address. This may be a bug.")
+				_trampolineToReturnWithValidationErrorString("Contact unexpectedly lacked PYX address. This may be a bug.")
 				return
 			}
 		} else {
@@ -1505,7 +1505,7 @@ class SendFundsView extends View
 			var isEnteredValue_integratedAddress;
 			var isEnteredValue_subAddress;
 			if (is_enteredAddressValue_OAAddress !== true) {
-				// then it's an XMR addr of some kind
+				// then it's an PYX addr of some kind
 				var address__decode_result; 
 				try {
 					address__decode_result = self.context.monero_utils.decode_address(enteredAddressValue, self.context.nettype)
@@ -1514,7 +1514,7 @@ class SendFundsView extends View
 					_trampolineToReturnWithValidationErrorString("Please enter a valid Monero address.") // this will re-enable submit btn etc
 					return // just return silently
 				}
-				target_address = enteredAddressValue // then this look like a valid XMR addr
+				target_address = enteredAddressValue // then this look like a valid PYX addr
 				if (address__decode_result.intPaymentId) {
 					isEnteredValue_integratedAddress = true
 				} else {
@@ -1586,15 +1586,15 @@ class SendFundsView extends View
 
 		//
 		// now if using alternate display currency, be sure to ask for terms agreement before doing send
-		if (!sweeping && selected_ccySymbol != Currencies.ccySymbolsByCcy.XMR) {
+		if (!sweeping && selected_ccySymbol != Currencies.ccySymbolsByCcy.PYX) {
 			let hasAgreedToUsageGateTerms = self.context.settingsController.invisible_hasAgreedToTermsOfCalculatedEffectiveMoneroAmount || false
 			if (hasAgreedToUsageGateTerms == false) {
 				// show alert… iff user agrees, write user has agreed to terms and proceed to branch, else bail
 				let title = `Important`
-				let message = `Though ${selected_ccySymbol} is selected, the app will send ${Currencies.ccySymbolsByCcy.XMR}. (This is not an exchange.)`
+				let message = `Though ${selected_ccySymbol} is selected, the app will send ${Currencies.ccySymbolsByCcy.PYX}. (This is not an exchange.)`
 				message += `\n\n`
 				message += `Rate providers include ${rateServiceDomainText}. Neither accuracy or favorability are guaranteed. Use at your own risk.`
-				let ok_buttonTitle = `Agree and Send ${final_amount_Number} ${Currencies.ccySymbolsByCcy.XMR}`
+				let ok_buttonTitle = `Agree and Send ${final_amount_Number} ${Currencies.ccySymbolsByCcy.PYX}`
 				let cancel_buttonTitle = "Cancel"
 				self.context.windowDialogs.PresentQuestionAlertDialogWith(
 					title, 
@@ -1619,7 +1619,7 @@ class SendFundsView extends View
 			} else {
 				// show alert… iff user agrees, write user has agreed to terms and proceed to branch, else bail
 				let title = `Confirm Amount`
-				let message = `Send ${final_amount_Number} ${Currencies.ccySymbolsByCcy.XMR}?`
+				let message = `Send ${final_amount_Number} ${Currencies.ccySymbolsByCcy.PYX}?`
 				let ok_buttonTitle = `Send`
 				let cancel_buttonTitle = "Cancel"
 				self.context.windowDialogs.PresentQuestionAlertDialogWith(
@@ -2102,16 +2102,16 @@ class SendFundsView extends View
 				//
 				const code = jsQR(imageData.data, imageData.width, imageData.height)
 				if (!code || !code.location) {
-					self.validationMessageLayer.SetValidationError("MyMonero was unable to find a QR code in that image.")
+					self.validationMessageLayer.SetValidationError("MyPyrexcoin was unable to find a QR code in that image.")
 					return
 				}
 				const stringData = code.data
 				if (!stringData) {
-					self.validationMessageLayer.SetValidationError("MyMonero was unable to decode a QR code from that image.")
+					self.validationMessageLayer.SetValidationError("MyPyrexcoin was unable to decode a QR code from that image.")
 					return
 				}
 				if (typeof stringData !== 'string') {
-					self.validationMessageLayer.SetValidationError("MyMonero was able to decode QR code but got unrecognized result.")
+					self.validationMessageLayer.SetValidationError("MyPyrexcoin was able to decode QR code but got unrecognized result.")
 					return
 				}
 				const possibleURIString = stringData
@@ -2154,7 +2154,7 @@ class SendFundsView extends View
 				self.amountInputLayer.value = amount
 			}
 			//
-			const amountCcy = requestPayload.amount_ccy || "XMR"
+			const amountCcy = requestPayload.amount_ccy || "PYX"
 			// TODO: validate amountCcy
 			self.ccySelectLayer.value = amountCcy // TODO: possibly to just do this?
 			//

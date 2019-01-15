@@ -112,11 +112,11 @@ class MenuController extends MenuController_Abstract
 		const appName = self.context.app.getName()
 		//
 		const menuSpecs = []
-		{ // MyMonero menu
+		{ // MyPyrexcoin menu
 			const submenu = 
 			[
 				{
-					label: 'About MyMonero',
+					label: 'About MyPyrexcoin',
 					click: function(menuItem, browserWindow, event)
 					{
 						self.context.aboutWindowController.MakeKeyAndVisible()
@@ -149,7 +149,7 @@ class MenuController extends MenuController_Abstract
 						if (isLinux) { // linux has no support for updates in the app afaik so this is redirected to the downloads page - the user is advised to update via their pkg mgmt system - can that be integrated?
 							const shell = require('electron').shell
 							shell.openExternal( // maybe share this constant with AppUpdatesController.electron.main and anything else that may need it in the future but file it under 'releases' and not 'release notes' despite its usage in AppUpdatesC
-								"https://github.com/mymonero/mymonero-app-js/releases"
+								"https://github.com/pyrex-coin/mypyrexcoin-app-js/releases"
 							)
 							return;
 						}
@@ -309,10 +309,10 @@ class MenuController extends MenuController_Abstract
 			const submenu = 
 			[
 				{
-					label: 'MyMonero.com',
+					label: 'Pyrexcoin.com',
 					click: function(menuItem, browserWindow, event)
 					{
-						shell.openExternal('https://mymonero.com/')
+						shell.openExternal('https://pyrexcoin.com/')
 					}
 				},
 				{

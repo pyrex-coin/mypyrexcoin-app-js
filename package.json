@@ -1,23 +1,23 @@
 {
-  "name": "MyMonero",
-  "author": "MyMonero",
-  "description": "The simplest way to use Monero",
+  "name": "MyPyrexcoin",
+  "author": "Pyrex-coin",
+  "description": "The simplest way to use Pyrexcoin",
   "version": "1.1.4",
   "license": "SEE LICENSE IN LICENSE.txt",
-  "repository": "https://github.com/mymonero/mymonero-app-js",
+  "repository": "https://github.com/pyrex-coin/mypyrexcoin-app-js.git",
   "private": false,
   "main": "./local_modules/electron_main/electron_main.js",
   "scripts": {
     "start": "electron ./local_modules/electron_main/electron_main.js",
     "start-dev": "NODE_ENV=development electron ./local_modules/electron_main/electron_main.js",
-    "dist-m": "CSC_IDENTITY_AUTO_DISCOVERY=false CSC_NAME=\"MyMonero Pty Ltd\" electron-builder -m -p never",
+    "dist-m": "CSC_IDENTITY_AUTO_DISCOVERY=false CSC_NAME=\"Pyrex-coin Pty Ltd\" electron-builder -m -p never",
     "dist-w": "electron-builder -w -p never",
     "dist-l": "electron-builder -l -p never",
     "postinstall": "electron-builder install-app-deps"
   },
   "build": {
-    "appId": "com.mymonero.mymonero-desktop",
-    "copyright": "Copyright © 2014-2019 MyMonero/",
+    "appId": "com.pyrexcoin.mypyrexcoin-desktop",
+    "copyright": "Copyright © 2014-2019 Pyrexcoin/",
     "asar": true,
     "forceCodeSigning": false,
     "files": [
@@ -56,8 +56,8 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "mymonero",
-        "repo": "mymonero-app-js"
+        "owner": "pyrex-coin",
+        "repo": "mypyrexcoin-app-js"
       }
     ],
     "mac": {
@@ -69,10 +69,10 @@
       ],
       "type": "distribution",
       "icon": "icon.icns",
-      "identity": "MyMonero Pty Ltd (NLN5D623Y3)",
+      "identity": "Pyrex-coin",
       "extendInfo": {
-        "com.apple.developer.team-identifier": "NLN5D623Y3",
-        "com.apple.application-identifier": "NLN5D623Y3.com.mymonero.mymonero-desktop"
+        "com.apple.developer.team-identifier": "NLN5D623Y3s",
+        "com.apple.application-identifier": "NLN5D623Y3s.com.pyrexcoin.mypyrexcoin-desktop"
       }
     },
     "win": {
@@ -80,7 +80,7 @@
         "nsis"
       ],
       "legalTrademarks": "Copyright © 2014-2019 MyMonero.",
-      "publisherName": "MyMonero Pty Ltd."
+      "publisherName": "Pyrexcoin Ltd."
     },
     "nsis": {
       "perMachine": true
@@ -93,9 +93,9 @@
     },
     "protocols": [
       {
-        "name": "Monero Funds Request URL",
+        "name": "Pyrexcoin Funds Request URL",
         "schemes": [
-          "monero"
+          "pyrex-coin"
         ]
       }
     ]
@@ -104,7 +104,10 @@
     "node": "7.4.0"
   },
   "dependencies": {
+    "@babel/core": "^7.2.2",
+    "ajv": "^6.6.2",
     "async": "2.6.1",
+    "cross-env": "^5.2.0",
     "electron-context-menu": "0.10.0",
     "electron-log": "2.2.17",
     "electron-updater": "4.0.6",

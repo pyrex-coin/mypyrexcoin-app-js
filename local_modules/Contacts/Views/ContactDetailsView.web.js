@@ -145,7 +145,7 @@ class ContactDetailsView extends View
 	_setup_field__cached_OAResolved_XMR_address()
 	{
 		const self = this
-		const fieldLabelTitle = "XMR Address (cached)"
+		const fieldLabelTitle = "PYX Address (cached)"
 		const value = self.contact.cached_OAResolved_XMR_address
 		const valueToDisplayIfValueNil = "N/A"
 		const div = commonComponents_tables.New_copyable_longStringValueField_component_fieldContainerLayer(

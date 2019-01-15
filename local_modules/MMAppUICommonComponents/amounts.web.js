@@ -93,8 +93,8 @@ function New_AmountInputFieldPKG(
 	// not going to set `pattern` attribute because it can't support periods
 	// not going to set type="number" because it inserts commas, etc
 	valueLayer.style.textAlign = "right"
-	valueLayer.float = "left" // because we want it to be on the same line as the "XMR" label
-	valueLayer.style.display = "inline-block" // so we can have the XMR label on the right
+	valueLayer.float = "left" // because we want it to be on the same line as the "PYX" label
+	valueLayer.style.display = "inline-block" // so we can have the PYX label on the right
 	valueLayer.style.width = amountInput_baseW+"px"
 	let paddingRight = valueLayer.Component_default_padding_h() + selectLayer_w
 	valueLayer.style.paddingRight = paddingRight+"px" // make room for the currency select

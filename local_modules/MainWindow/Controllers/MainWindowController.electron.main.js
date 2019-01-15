@@ -94,7 +94,7 @@ class MainWindowController
 			height: 552,
 			minWidth: 412, // For action buttons
 			minHeight: 420,
-			title: "MyMonero", // Windows
+			title: "MyPyrexcoin", // Windows
 			//
 			show: false, // shown on ready
 			//
@@ -172,7 +172,7 @@ class MainWindowController
 		})
 		window.on('page-title-updated', function(e, title) { 
 			// prevent system from changing the name of the window - may be relevant on platforms like Linux
-			if (title !== "MyMonero") { 
+			if (title !== "MyPyrexcoin") { 
 				e.preventDefault() 
 			} 
 		}) 

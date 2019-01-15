@@ -139,7 +139,7 @@ class CreateWallet_Instructions_View extends BaseView_AWalletWizardScreen
 		if (self.context.isLiteApp == true) {
 			list.push([
 				"Web browsers are insecure",
-				"The convenience of MyMonero for web comes at a security cost. <a href='https://mymonero.com' target='_blank' style='color: #11bbec; cursor: pointer; -webkit-user-select: none; text-decoration: none;'>Download the desktop or mobile app</a>."
+				"The convenience of MyPyrexcoin for web comes at a security cost. <a href='https://mymonero.com' target='_blank' style='color: #11bbec; cursor: pointer; -webkit-user-select: none; text-decoration: none;'>Download the desktop or mobile app</a>."
 			])
 		}
 		return list

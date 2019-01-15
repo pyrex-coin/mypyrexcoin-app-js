@@ -108,7 +108,7 @@ class FundsRequestQRDisplayView extends View
 		{
 			let payment_id = self.initializing__fundsRequest.payment_id
 			let amount = self.initializing__fundsRequest.amount
-			let amountCcySymbol = self.initializing__fundsRequest.amountCcySymbol || Currencies.ccySymbolsByCcy.XMR
+			let amountCcySymbol = self.initializing__fundsRequest.amountCcySymbol || Currencies.ccySymbolsByCcy.PYX
 			let to_address = self.initializing__fundsRequest.to_address
 			var middleTruncatedString = function(fullStr, numFrontChars, numEndChars, separator)
 			{
@@ -124,7 +124,7 @@ class FundsRequestQRDisplayView extends View
 			innerHTML = "Scan this code to send "
 			if (amount) {
 				innerHTML += amount + " " + amountCcySymbol
-				if (amountCcySymbol != Currencies.ccySymbolsByCcy.XMR) {
+				if (amountCcySymbol != Currencies.ccySymbolsByCcy.PYX) {
 					innerHTML += " in Monero"
 				}
 			} else {

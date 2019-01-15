@@ -46,11 +46,11 @@ const WalletHostPollingController = require('../Controllers/WalletHostPollingCon
 //
 const wallet_currencies =
 {
-	xmr: 'xmr'
+	xmr: 'pyx'
 }
 const humanReadable__wallet_currencies =
 {
-	xmr: 'XMR'
+	xmr: 'PYX'
 }
 //
 // Shared utility functions (these can be factored out)
@@ -1249,7 +1249,7 @@ class Wallet extends EventEmitter
 			// critical to do on every exit from this method
 			self.context.userIdleInWindowController.ReEnable_userIdle()
 		}
-		let statusUpdate_messageBase = isSweepTx ? `Sending wallet balance…` : `Sending ${amount} XMR…`
+		let statusUpdate_messageBase = isSweepTx ? `Sending wallet balance…` : `Sending ${amount} PYX…`
 		function ___do_statusUpdate(code)
 		{
 			let suffix = monero_sendingFunds_utils.SendFunds_ProcessStep_MessageSuffix[code] // this is kept in JS rather than C++ to allow for localization via the same mechanism as the rest of the app
