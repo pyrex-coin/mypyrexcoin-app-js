@@ -84,7 +84,7 @@ window.BootApp = function()
 			Emoji_renderWithNativeEmoji: isMobile == true, // b/c this is a browser, we could be on desktop, i.e. w/o guaranteed native emoji support
 			// TODO: detect if Mac … if so, render w/o native emoji (need holistic fallback solution though - see Gitlab post referenced by https://github.com/mymonero/mymonero-app-js/issues/194)
 			//
-			appDownloadLink_domainAndPath: "mymonero.com",
+			appDownloadLink_domainAndPath: "pyrexcoin.com",
 			Settings_shouldDisplayAboutAppButton: true, // special case - since we don't have a system menu to place it in
 			HostedMoneroAPIClient_DEBUGONLY_mockSendTransactionSuccess: false && process.env.NODE_ENV === 'development',
 			Views_selectivelyEnableMobileRenderingOptimizations: isMobile === true,

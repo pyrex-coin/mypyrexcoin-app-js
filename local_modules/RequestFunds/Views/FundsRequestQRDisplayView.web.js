@@ -125,10 +125,10 @@ class FundsRequestQRDisplayView extends View
 			if (amount) {
 				innerHTML += amount + " " + amountCcySymbol
 				if (amountCcySymbol != Currencies.ccySymbolsByCcy.PYX) {
-					innerHTML += " in Monero"
+					innerHTML += " in Pyrexcoin"
 				}
 			} else {
-				innerHTML += "Monero"
+				innerHTML += "Pyrexcoin"
 			}
 			if (payment_id != null && payment_id != "" && typeof payment_id !== "undefined") {
 				innerHTML += " with payment ID " + middleTruncatedString(payment_id, 10, 6, "…")

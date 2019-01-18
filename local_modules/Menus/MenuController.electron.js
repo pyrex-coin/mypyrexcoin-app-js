@@ -322,7 +322,7 @@ class MenuController extends MenuController_Abstract
 					label: 'Support',
 					click: function(menuItem, browserWindow, event)
 					{
-						shell.openExternal('https://mymonero.com/#/support')
+						shell.openExternal('https://pyrexcoin.com/#/support')
 					}
 				},
 				{
@@ -332,14 +332,14 @@ class MenuController extends MenuController_Abstract
 					label: 'Privacy Policy',
 					click: function(menuItem, browserWindow, event)
 					{
-						shell.openExternal('https://mymonero.com/#/privacy-policy')
+						shell.openExternal('https://pyrexcoin.com/#/privacy-policy')
 					}
 				},
 				{
 					label: 'Terms of Use',
 					click: function(menuItem, browserWindow, event)
 					{
-						shell.openExternal('https://mymonero.com/#/terms')
+						shell.openExternal('https://pyrexcoin.com/#/terms')
 					}
 				}
 			]

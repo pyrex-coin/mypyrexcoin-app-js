@@ -51,7 +51,7 @@ class AddContactFromSendTabView extends AddContactFromOtherTabView
 				try {
 					self.address__decode_result = self.context.monero_utils.decode_address(self.enteredAddressValue, self.context.nettype)
 				} catch (e) {
-					console.warn("Couldn't decode as a Monero address.", e)
+					console.warn("Couldn't decode as a Pyrexcoin address.", e)
 					return // just return silently
 				}
 				// we don't care whether it's an integrated address or not here since we're not going to use its payment id
@@ -75,7 +75,7 @@ class AddContactFromSendTabView extends AddContactFromOtherTabView
 	}
 	_overridable_initial_inlineMessageString()
 	{
-		return "Your Monero is on its way."
+		return "Your Pyrexcoin is on its way."
 	}
 	_overridable_initial_inlineMessage_wantsXButtonHidden()
 	{

@@ -232,7 +232,7 @@ class SendFundsView extends View
 		{
 			const labelLayer = commonComponents_forms.New_fieldTitle_labelLayer("FROM", self.context)
 			{
-				const tooltipText = `Monero makes transactions<br/>with your "available outputs",<br/>so part of your balance will<br/>be briefly locked and then<br/>returned as change.`
+				const tooltipText = `Pyrexcoin makes transactions<br/>with your "available outputs",<br/>so part of your balance will<br/>be briefly locked and then<br/>returned as change.`
 				const view = commonComponents_tooltips.New_TooltipSpawningButtonView(tooltipText, self.context)
 				const layer = view.layer
 				labelLayer.appendChild(layer) // we can append straight to labelLayer as we don't ever change its innerHTML
@@ -322,7 +322,7 @@ class SendFundsView extends View
 			breakingDiv.appendChild(layer)
 		}
 		{
-			const tooltipText = "Based on Monero network<br/>fee estimate (not final).<br/><br/>MyPyrexcoin does not charge<br/>a transfer service fee."
+			const tooltipText = "Based on Pyrexcoin network<br/>fee estimate (not final).<br/><br/>MyPyrexcoin does not charge<br/>a transfer service fee."
 			const view = commonComponents_tooltips.New_TooltipSpawningButtonView(tooltipText, self.context)
 			const layer = view.layer
 			breakingDiv.appendChild(layer)
@@ -347,7 +347,7 @@ class SendFundsView extends View
 		const labelLayer = commonComponents_forms.New_fieldTitle_labelLayer("TO", self.context)
 		labelLayer.style.marginTop = "17px" // to square with MEMO field on Send Funds
 		{
-			const tooltipText = `Drag &amp; drop QR codes<br/>to auto-fill.<br/><br/>Please double-check<br/>your recipient info as<br/>Monero transfers are<br/>not yet&nbsp;reversible.`
+			const tooltipText = `Drag &amp; drop QR codes<br/>to auto-fill.<br/><br/>Please double-check<br/>your recipient info as<br/>Pyrexcoin transfers are<br/>not yet&nbsp;reversible.`
 			const view = commonComponents_tooltips.New_TooltipSpawningButtonView(tooltipText, self.context)
 			const layer = view.layer
 			labelLayer.appendChild(layer) // we can append straight to labelLayer as we don't ever change its innerHTML
@@ -481,7 +481,7 @@ class SendFundsView extends View
 			const labelLayer = commonComponents_forms.New_fieldTitle_labelLayer("PRIORITY", self.context)
 			labelLayer.style.marginTop = "4px"
 			{
-				const tooltipText = `You can pay the Monero<br/>network a higher fee to<br/>have your transfers<br/>confirmed faster.`
+				const tooltipText = `You can pay the Pyrexcoin<br/>network a higher fee to<br/>have your transfers<br/>confirmed faster.`
 				const view = commonComponents_tooltips.New_TooltipSpawningButtonView(tooltipText, self.context)
 				const layer = view.layer
 				labelLayer.appendChild(layer) // we can append straight to labelLayer as we don't ever change its innerHTML
@@ -686,7 +686,7 @@ class SendFundsView extends View
 			div.style.fontWeight = "300"
 			div.style.webkitFontSmoothing = "subpixel-antialiased"
 			//
-			div.innerHTML = "Drag and drop a<br/>Monero Request Code "
+			div.innerHTML = "Drag and drop a<br/>Pyrexcoin Request Code "
 			self.qrCodeInputs_contentView.layer.appendChild(div)
 		}
 		self.addSubview(view)
@@ -902,7 +902,7 @@ class SendFundsView extends View
 	//
 	Navigation_Title()
 	{
-		return "Send Monero"
+		return "Send Pyrexcoin"
 	}
 	Navigation_New_RightBarButtonView()
 	{
@@ -1401,7 +1401,7 @@ class SendFundsView extends View
 		const wallet = self.walletSelectView.CurrentlySelectedRowItem
 		{
 			if (typeof wallet === 'undefined' || !wallet) {
-				_trampolineToReturnWithValidationErrorString("Please create a wallet to send Monero.")
+				_trampolineToReturnWithValidationErrorString("Please create a wallet to send Pyrexcoin.")
 				return
 			}
 			if (wallet.didFailToInitialize_flag) {
@@ -1510,8 +1510,8 @@ class SendFundsView extends View
 				try {
 					address__decode_result = self.context.monero_utils.decode_address(enteredAddressValue, self.context.nettype)
 				} catch (e) {
-					console.warn("Couldn't decode as a Monero address.", e)
-					_trampolineToReturnWithValidationErrorString("Please enter a valid Monero address.") // this will re-enable submit btn etc
+					console.warn("Couldn't decode as a Pyrexcoin address.", e)
+					_trampolineToReturnWithValidationErrorString("Please enter a valid Pyrexcoin address.") // this will re-enable submit btn etc
 					return // just return silently
 				}
 				target_address = enteredAddressValue // then this look like a valid PYX addr
@@ -1974,7 +1974,7 @@ class SendFundsView extends View
 			try {
 				address__decode_result = self.context.monero_utils.decode_address(enteredPossibleAddress, self.context.nettype)
 			} catch (e) {
-				console.warn("Couldn't decode as a Monero address.", e)
+				console.warn("Couldn't decode as a Pyrexcoin address.", e)
 				self.isResolvingSendTarget = false
 				self.set_isSubmittable_needsUpdate()
 				return // just return silently
@@ -2260,7 +2260,7 @@ class SendFundsView extends View
 		}
 		// ^ so we don't get torn down while dialog open
 		self.context.filesystemUI.PresentDialogToOpenOneImageFile(
-			"Open Monero Request",
+			"Open Pyrexcoin Request",
 			function(err, absoluteFilePath)
 			{
 				self.context.userIdleInWindowController.ReEnable_userIdle()					

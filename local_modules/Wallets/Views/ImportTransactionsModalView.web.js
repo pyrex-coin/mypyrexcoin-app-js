@@ -60,7 +60,7 @@ class ImportTransactionsModalView extends View
 		const specificAPIAddressURLAuthority = self.context.settingsController.specificAPIAddressURLAuthority
 		self.approximate_importOAAddress = specificAPIAddressURLAuthority != null && specificAPIAddressURLAuthority != "" && typeof specificAPIAddressURLAuthority !== 'undefined'
 			? `import.${specificAPIAddressURLAuthority}` // this is obvs 'approximate' and only meant to be used as an example…… if specificAPIAddressURLAuthority contains a port or a subdomain then this will appear to be obviously wrong but still server its purpose as an example to the power user who is entering a custom server address
-			: "import.mymonero.com" // TODO: possibly get this from a shared config file
+			: "import.pyrexcoin.com" // TODO: possibly get this from a shared config file
 		//
 		self.setup_views()
 		self.startObserving()
@@ -451,7 +451,7 @@ class ImportTransactionsModalView extends View
 		const wallet = self.walletSelectView.CurrentlySelectedRowItem
 		{
 			if (typeof wallet === 'undefined' || !wallet) {
-				_trampolineToReturnWithValidationErrorString("Please create a wallet to send Monero.")
+				_trampolineToReturnWithValidationErrorString("Please create a wallet to send Pyrexcoin.")
 				return
 			}
 		}
@@ -549,7 +549,7 @@ class ImportTransactionsModalView extends View
 					{
 						self.informationalHeaderLayer.innerHTML = `This requires a one-time import fee of ${raw_formattedMoney} PYX`
 						//
-						const tooltipText = `Importing your wallet means the server will scan the entire Monero blockchain for your wallet's past transactions, then stay up-to-date.<br/><br/>As this process places heavy load on the server, import is triggered by sending a fee with the specific payment ID below to the server at e.g. ${self.approximate_importOAAddress}.`
+						const tooltipText = `Importing your wallet means the server will scan the entire Pyrexcoin blockchain for your wallet's past transactions, then stay up-to-date.<br/><br/>As this process places heavy load on the server, import is triggered by sending a fee with the specific payment ID below to the server at e.g. ${self.approximate_importOAAddress}.`
 						const view = commonComponents_tooltips.New_TooltipSpawningButtonView(tooltipText, self.context)
 						const layer = view.layer
 						self.informationalHeaderLayer.appendChild(layer) // we can append straight to layer as we don't ever change its innerHTML after this
@@ -573,7 +573,7 @@ class ImportTransactionsModalView extends View
 					}
 					{
 						// const command = `transfer 3 import.mymonero.com ${import_fee__JSBigInt} ${payment_id}`
-						const tooltipText = "For convenience you may send the fee from MyPyrexcoin here, or the official CLI or GUI tools, or any other Monero wallet.<br/><br/>Please be sure to use the exact payment ID below, so the server knows which wallet to import."
+						const tooltipText = "For convenience you may send the fee from MyPyrexcoin here, or the official CLI or GUI tools, or any other Pyrexcoin wallet.<br/><br/>Please be sure to use the exact payment ID below, so the server knows which wallet to import."
 						const view = commonComponents_tooltips.New_TooltipSpawningButtonView(tooltipText, self.context)
 						const layer = view.layer
 						self.walletSelectLabelLayer.appendChild(layer) // we can append straight to layer as we don't ever change its innerHTML after this

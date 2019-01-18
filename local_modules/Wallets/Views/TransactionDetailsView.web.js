@@ -83,7 +83,7 @@ class TransactionDetailsView extends View
 		{
 			const layer = commonComponents_tables.New_inlineMessageDialogLayer(
 				self.context, 
-				"Your Monero is on its way.",
+				"Your Pyrexcoin is on its way.",
 				false // for now
 			)
 			layer.style.width = "calc(100% - 0px)"

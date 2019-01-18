@@ -54,19 +54,19 @@ class RootFooterView extends View
 		self.layer.appendChild(self._new_linkButtonLayerElement("Home", primaryUtilityLink_colorValue, function(e)
 		{
 			e.preventDefault()
-			window.open('https://www.mymonero.com/', '_blank') // new tab
+			window.open('https://www.pyrexcoin.com/', '_blank') // new tab
 			return false;
 		}))
 		self.layer.appendChild(self._new_linkButtonLayerElement("Privacy", utilityLink_colorValue, function(e)
 		{
 			e.preventDefault()
-			window.open('https://www.mymonero.com/#/privacy-policy', '_blank') // new tab
+			window.open('https://www.pyrexcoin.com/#/privacy-policy', '_blank') // new tab
 			return false;
 		}))
 		self.layer.appendChild(self._new_linkButtonLayerElement("Terms", utilityLink_colorValue, function(e)
 		{
 			e.preventDefault()
-			window.open('https://www.mymonero.com/#/terms', '_blank') // new tab
+			window.open('https://www.pyrexcoin.com/#/terms', '_blank') // new tab
 			return false;
 		}))
 		//
@@ -74,7 +74,7 @@ class RootFooterView extends View
 			const buttonLayer = self._new_linkButtonLayerElement("Support", importantLink_colorValue, function(e)
 			{
 				e.preventDefault()
-				window.open("https://mymonero.com/?open_support=1", "_blank")
+				window.open("https://pyrexcoin.com/?open_support=1", "_blank")
 				// shift to this when support can be brought directly back in:
 				// window.Intercom('show')
 				// previous:

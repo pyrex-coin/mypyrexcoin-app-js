@@ -208,7 +208,7 @@ class AddContactView extends ContactFormView
 				address__decode_result = self.context.monero_utils.decode_address(address, self.context.nettype)
 			} catch (e) {
 				__reEnableForm()
-				self.validationMessageLayer.SetValidationError("Please enter a valid Monero address") // not using the error here cause it can be pretty unhelpful to the lay user
+				self.validationMessageLayer.SetValidationError("Please enter a valid Pyrexcoin address") // not using the error here cause it can be pretty unhelpful to the lay user
 				return
 			}
 			const integratedAddress_paymentId = address__decode_result.intPaymentId

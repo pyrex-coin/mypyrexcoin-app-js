@@ -356,7 +356,7 @@ class FundsRequestDetailsView extends View
 		var value = "" // must use \r\n instead of \n for Windows
 		let ccy = self.fundsRequest.amountCcySymbol || "PYX"
 		{
-			value += "Someone has requested a Monero payment"
+			value += "Someone has requested a Pyrexcoin payment"
 			if (self.fundsRequest.amount) {
 				value += ` of ${self.fundsRequest.amount} ${ccy}`
 			}
@@ -386,7 +386,7 @@ class FundsRequestDetailsView extends View
 		let ccy = self.fundsRequest.amountCcySymbol || "PYX"
 		value += "<p>"
 		{
-			value += "Someone has requested a Monero payment"
+			value += "Someone has requested a Pyrexcoin payment"
 			if (self.fundsRequest.amount) {
 				value += ` of <strong>${self.fundsRequest.amount} ${ccy}</strong>`
 			}
@@ -412,7 +412,7 @@ class FundsRequestDetailsView extends View
 	//
 	Navigation_Title()
 	{
-		return "Monero Request"
+		return "Pyrexcoin Request"
 	}
 	//
 	//
@@ -448,8 +448,8 @@ class FundsRequestDetailsView extends View
 		}
 		self.context.filesystemUI.PresentDialogToSaveBase64ImageStringAsImageFile(
 			self.fundsRequest.qrCode_imgDataURIString,
-			"Save Monero Request",
-			"Monero request",
+			"Save Pyrexcoin Request",
+			"Pyrexcoin request",
 			function(err)
 			{
 				if (err) {

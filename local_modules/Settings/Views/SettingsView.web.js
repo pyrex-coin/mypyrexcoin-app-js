@@ -344,7 +344,7 @@ class SettingsView extends View
 			div.appendChild(labelLayer)
 			//
 			const valueLayer = commonComponents_forms.New_fieldValue_textInputLayer(self.context, {
-				placeholderText: "Leave blank to use mymonero.com"
+				placeholderText: "Leave blank to use Pyrexcoin's server"
 			})
 			valueLayer.autocomplete = "off"
 			valueLayer.autocorrect = "off"
@@ -541,7 +541,7 @@ class SettingsView extends View
 				}
 				var msg;
 				if (self.context.isLiteApp != true) { 
-					msg = 'Are you sure you want to delete all of your local data?\n\nAny wallets will remain permanently on the Monero blockchain but local data such as contacts will not be recoverable.'
+					msg = 'Are you sure you want to delete all of your local data?\n\nAny wallets will remain permanently on the Pyrexcoin blockchain but local data such as contacts will not be recoverable.'
 				} else {
 					msg = 'Are you sure you want to log out?'
 				}

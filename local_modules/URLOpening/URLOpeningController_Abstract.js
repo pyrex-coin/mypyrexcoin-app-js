@@ -30,7 +30,7 @@
 //
 const EventEmitter = require('events')
 //
-const PROTOCOL_PREFIX = "monero" // this is also specified for MacOS in packager.js under scheme
+const PROTOCOL_PREFIX = "pyrexcoin" // this is also specified for MacOS in packager.js under scheme
 // maybe support "mymonero" too
 //
 class URLOpeningController_Abstract extends EventEmitter
