@@ -41,8 +41,8 @@ const doNotCopyOrEnterFilepathsMatching =
 	/^\.eslint/,
 	/\.electron\.(.*)\.?(js|html|css)$/, // e.g. electron.js, electron.renderer.js, electron.child.js
 	/^electron_/,
-	/mymonero_core_js\/build/, // obviously do not want anything within this
-	/mymonero_core_js\/node_modules/, // all of these are dev dependencies, so we don't want them
+	/Pyrex-core-js\/build/, // obviously do not want anything within this
+	/Pyrex-core-js\/node_modules/, // all of these are dev dependencies, so we don't want them
 	/node_modules\/electron/, // no reason we'd want this
 	/LICENSE\.txt/,
 	/README\.md/,
