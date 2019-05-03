@@ -32,7 +32,7 @@ const ContactFormView = require('../../Contacts/Views/ContactFormView.web')
 const commonComponents_tables = require('../../MMAppUICommonComponents/tables.web')
 const commonComponents_activityIndicators = require('../../MMAppUICommonComponents/activityIndicators.web')
 //
-const monero_paymentID_utils = require('../../Pyrex-core-js/monero_utils/monero_paymentID_utils')
+const monero_paymentID_utils = require('../../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_paymentID_utils')
 //
 class EditContactFromContactsTabView extends ContactFormView
 {

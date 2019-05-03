@@ -30,9 +30,9 @@
 //
 const async = require('async')
 //
-const JSBigInt = require('../Pyrex-core-js/cryptonote_utils/biginteger').BigInteger // important: grab defined export
-const monero_config = require('../Pyrex-core-js/monero_utils/monero_config')
-const net_service_utils = require('../Pyrex-core-js/hostAPI/net_service_utils')
+const JSBigInt = require('../mypyrexcoin_libapp_js/Pyrex-core-js/cryptonote_utils/biginteger').BigInteger // important: grab defined export
+const monero_config = require('../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_config')
+const net_service_utils = require('../mypyrexcoin_libapp_js/Pyrex-core-js/hostAPI/net_service_utils')
 //
 const config__MyMonero = require('./config__MyMonero')
 //

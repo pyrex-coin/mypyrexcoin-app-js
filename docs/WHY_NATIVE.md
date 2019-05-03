@@ -8,7 +8,7 @@
 
 From 2014 until the release of these downloadable apps, the MyMonero service was only accessible as a web wallet on the MyMonero website. 
 
-Since your "private spend key" and "wallet seed" must never be sent to the server as a security feature, many operations (such as creating new wallets, and constructing transations to send money) could not be done on the server… and that meant that a lot of Javascript code which reimplements large parts of Monero had to be sent to, and run within users' web browsers.
+Since your "private spend key" and "wallet seed" must never be sent to the server as a security feature, many operations (such as creating new wallets, and constructing transations to send money) could not be done on the server… and that meant that a lot of Javascript code which reimplements large parts of Pyrexcoin had to be sent to, and run within users' web browsers.
 
 Loading that Javascript code opened up the possibility of an attacker inserting something malicious which, for example, could theoretically enable them to steal your funds. Another issue - which was actually observed – was users simply getting misdirected (perhaps by search engine) to a phishing site which was impersonating MyMonero under a different domain, which presumably tricked some users into having their keys stolen.
 

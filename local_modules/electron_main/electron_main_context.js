@@ -47,6 +47,12 @@ var context_object_instantiation_descriptions =
 		options: {}
 	},
 	{
+
+		module_path: __dirname + "/../HostedMoneroAPIClient/BackgroundResponseParser.electron.main",
+		instance_key: "backgroundResponseParser",
+		options: {}
+	},
+	{
 		module_path: __dirname + "/../MainWindow/Controllers/MainWindowController.electron.main",
 		instance_key: "mainWindowController",
 		options: {}

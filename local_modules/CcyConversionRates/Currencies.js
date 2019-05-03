@@ -28,9 +28,9 @@
 
 "use strict"
 //
-let monero_config = require('../Pyrex-core-js/monero_utils/monero_config')
-let monero_amount_format_utils = require('../Pyrex-core-js/monero_utils/monero_amount_format_utils')
-const JSBigInt = require('../Pyrex-core-js/cryptonote_utils/biginteger').BigInteger
+let monero_config = require('../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_config')
+let monero_amount_format_utils = require('../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_amount_format_utils')
+const JSBigInt = require('../mypyrexcoin_libapp_js/Pyrex-core-js/cryptonote_utils/biginteger').BigInteger
 //
 let ccySymbolsByCcy = exports.ccySymbolsByCcy = 
 {

@@ -29,7 +29,7 @@ All app source code and assets copyright © 2014-2019 by MyMonero. All rights re
 
 ## Downloads
 
-Download the latest version from our website at [mymonero.com/app](https://www.mymonero.com/app) or from the Releases tab. *(Coming soon)* 
+Download the latest version from our website at [pyrexcoin.com](https://www.pyrexcoin.com) or from the Releases tab.
 
 Developers and pre-release testers who would like to use and work on the app can run it by obtaining the source and running one of the build commands below.
 
@@ -58,7 +58,7 @@ If you would like to report an issue or share a feature request, please create a
 
 If you're reporting a bug, be sure to include all information which we would need to reproduce the issue, such as the operating system and app version on which you saw the bug, and the steps you took, if you can tell. 
 
-Please don't use the Issues tracker for general support or inquiries. You can also [contact us](https://mymonero.com/support) directly.
+Please don't use the Issues tracker for general support or inquiries. You can also [contact us](https://pyrexcoin.com/support) directly.
 
 
 # Contributing & Testing

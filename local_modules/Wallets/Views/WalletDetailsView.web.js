@@ -28,8 +28,8 @@
 //
 "use strict"
 //
-const monero_config = require('../../Pyrex-core-js/monero_utils/monero_config')
-const JSBigInt = require('../../Pyrex-core-js/cryptonote_utils/biginteger').BigInteger
+const monero_config = require('../../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_config')
+const JSBigInt = require('../../mypyrexcoin_libapp_js/Pyrex-core-js/cryptonote_utils/biginteger').BigInteger
 //
 const View = require('../../Views/View.web')
 //
@@ -48,7 +48,7 @@ const ImportTransactionsModalView = require('./ImportTransactionsModalView.web')
 const FundsRequestQRDisplayView = require('../../RequestFunds/Views/FundsRequestQRDisplayView.web')
 //
 let Currencies = require('../../CcyConversionRates/Currencies')
-const monero_amount_format_utils = require("../../Pyrex-core-js/monero_utils/monero_amount_format_utils");
+const monero_amount_format_utils = require("../../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_amount_format_utils");
 //
 class WalletDetailsView extends View
 {
@@ -666,17 +666,34 @@ class WalletDetailsView extends View
 	Navigation_New_RightBarButtonView()
 	{
 		const self = this
-		if (self.context.isLiteApp == true) {
-			return null // no need for this screen - although the log out button is nice
-		}
 		const view = commonComponents_navigationBarButtons.New_RightSide_EditButtonView(self.context)
+		if (self.context.isLiteApp == true) {
+			view.layer.innerHTML = "Log&nbsp;Out"
+			view.layer.style.width = "64px"
+		}
 		const layer = view.layer
 		layer.addEventListener(
 			"click",
 			function(e)
 			{
 				e.preventDefault()
-				{ // v--- self.navigationController because self is presented packaged in a StackNavigationView				
+				if (self.context.isLiteApp == true) {
+					self.context.windowDialogs.PresentQuestionAlertDialogWith(
+						'Log out?',
+						'Are you sure you want to log out?',
+						'Log Out',
+						'Cancel',
+						function(err, didChooseYes)
+						{
+							if (err) {
+								throw err
+							}
+							if (didChooseYes) {
+								self.context.passwordController.InitiateDeleteEverything(function(err) {})
+							}
+						}
+					)
+				} else { // v--- self.navigationController because self is presented packaged in a StackNavigationView
 					const EditWalletView = require('./EditWalletView.web')
 					const view = new EditWalletView({
 						wallet: self.wallet
@@ -702,6 +719,20 @@ class WalletDetailsView extends View
 		const bootFailed = wallet.didFailToInitialize_flag == true || wallet.didFailToBoot_flag == true
 		//
 		return bootFailed
+	}
+	_wallet_shouldShowExportCSVBtn()
+	{
+		const self = this
+		if (self._wallet_bootFailed()) {
+			return false
+		}
+		if (self.wallet.HasEverFetched_transactions() !== true) {
+			return false
+		}
+		if (self.wallet.New_StateCachedTransactions().length == 0) {
+			return false
+		}
+		return true
 	}
 	_wallet_shouldShowImportTxsBtn()
 	{
@@ -840,7 +871,7 @@ class WalletDetailsView extends View
 		}
 		const listContainerLayer = document.createElement("div")
 		self.transactions_listContainerLayer = listContainerLayer
-		listContainerLayer.style.margin = `16px 0 40px 0` // when we add 'Load more' btn, 40->16
+		listContainerLayer.style.margin = `16px 0 16px 0`
 		listContainerLayer.style.background = "#383638"
 		if (self.context.Views_selectivelyEnableMobileRenderingOptimizations !== true) {
 			listContainerLayer.style.boxShadow = "0 0.5px 1px 0 #161416, inset 0 0.5px 0 0 #494749"
@@ -1013,6 +1044,7 @@ class WalletDetailsView extends View
 				if (self.importTransactionsButtonView.layer.parentNode) {
 					self.importTransactionsButtonView.layer.parentNode.removeChild(self.importTransactionsButtonView.layer)
 				}
+				self.importTransactionsButtonView = null
 			}
 		}
 		var shouldShowActivityIndicator = 
@@ -1101,6 +1133,30 @@ class WalletDetailsView extends View
 			}
 		}
 		self.__configure_noTransactions_emptyStateView_height()
+		//
+		if (self._wallet_shouldShowExportCSVBtn()) {
+			if (!self.exportCSVButtonView || typeof self.exportCSVButtonView === 'undefined') {
+				const buttonView = commonComponents_tables.New_clickableLinkButtonView(
+					"EXPORT CSV",
+					self.context, 
+					function()
+					{
+						self._exportTransactionsCSV()
+					}
+				)
+				buttonView.layer.style.marginBottom = "24px"
+				self.exportCSVButtonView = buttonView
+				// this is ~insertAfter:
+				self.transactionsListLayerContainerLayer.appendChild(buttonView.layer);
+			}
+		} else {
+			if (self.exportCSVButtonView) {
+				if (self.exportCSVButtonView.layer.parentNode) {
+					self.exportCSVButtonView.layer.parentNode.removeChild(self.exportCSVButtonView.layer)
+				}
+				self.exportCSVButtonView = null
+			}
+		}
 	}
 	__configure_noTransactions_emptyStateView_height()
 	{
@@ -1119,7 +1175,9 @@ class WalletDetailsView extends View
 				self.hasEverAutomaticallyDisplayedImportModal = true; // immediately, in case login and viewDidAppear race
 				setTimeout(function()
 				{
-					self._present_importTransactionsModal()
+					if (self.wallet.hasBeenTornDown != true) {
+						self._present_importTransactionsModal()
+					}
 				}, afterS * 1000)
 			}
 		}
@@ -1185,6 +1243,64 @@ class WalletDetailsView extends View
 		const navigationView = new StackAndModalNavigationView({}, self.context)
 		navigationView.SetStackViews([ view ])
 		self.navigationController.PresentView(navigationView, true)
+	}
+	//
+	// Imperatives - Button functions - CSV export
+	_exportTransactionsCSV()
+	{
+		const self = this
+		const wallet_bootFailed = self._wallet_bootFailed()
+		if (wallet_bootFailed) {
+			throw "Expected !wallet_bootFailed"
+		}
+		if (self.wallet.HasEverFetched_transactions() !== true) {
+			throw "Expected true HasEverFetched_transactions"
+		}
+		const stateCachedTransactions = self.wallet.New_StateCachedTransactions()
+		if (stateCachedTransactions.length == 0) {
+			throw "Expected non-zero num transactions"
+		}
+		const headers = ["date", "amount", "status", "tx id", "payment_id"];
+		let csvContent = "";
+		csvContent += headers.join(",") + "\r\n"
+		stateCachedTransactions.forEach(
+			function(tx, i)
+			{
+				const received_JSBigInt = tx.total_received ? (typeof tx.total_received == 'string' ? new JSBigInt(tx.total_received) : tx.total_received) : new JSBigInt("0")
+				const sent_JSBigInt = tx.total_sent ? (typeof tx.total_sent == 'string' ? new JSBigInt(tx.total_sent) : tx.total_sent) : new JSBigInt("0")
+				const amountString = monero_amount_format_utils.formatMoney(received_JSBigInt.subtract(sent_JSBigInt))
+				//
+				const payment_id = `${ tx.payment_id || "" }`
+				const status = `${ tx.isFailed ? "REJECTED" : (tx.isConfirmed !== true || tx.isUnlocked !== true ? "PENDING" : "CONFIRMED") }`
+				//
+				const columns = [ tx.timestamp.toISOString(), amountString, status, tx.hash, payment_id ]
+				csvContent += columns.join(",") + "\r\n";
+			}
+		)
+		self.context.filesystemUI.PresentDialogToSaveTextFile(
+			csvContent,
+			"Save CSV",
+			self.wallet.walletLabel || "transactions",
+			"csv",
+			function(err)
+			{
+				if (err) {
+					const errString = err.message 
+						? err.message 
+						: err.toString() 
+							? err.toString() 
+							: ""+err
+					navigator.notification.alert(
+						errString, 
+						function() {}, // nothing to do 
+						"Error", 
+						"OK"
+					)
+					return
+				}
+			},
+			"data:text/csv;charset=utf-8,"
+		)
 	}
 	//
 	//

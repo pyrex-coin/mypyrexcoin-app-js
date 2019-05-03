@@ -43,17 +43,17 @@ const commonComponents_actionButtons = require('../../MMAppUICommonComponents/ac
 //
 const JustSentTransactionDetailsView = require('./JustSentTransactionDetailsView.web')
 //
-const monero_sendingFunds_utils = require('../../Pyrex-core-js/monero_utils/monero_sendingFunds_utils')
+const monero_sendingFunds_utils = require('../../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_sendingFunds_utils')
 const monero_openalias_utils = require('../../OpenAlias/monero_openalias_utils')
-const monero_paymentID_utils = require('../../Pyrex-core-js/monero_utils/monero_paymentID_utils')
-const monero_config = require('../../Pyrex-core-js/monero_utils/monero_config')
-const monero_amount_format_utils = require('../../Pyrex-core-js/monero_utils/monero_amount_format_utils')
+const monero_paymentID_utils = require('../../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_paymentID_utils')
+const monero_config = require('../../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_config')
+const monero_amount_format_utils = require('../../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_amount_format_utils')
 //
 const jsQR = require('jsqr')
 const monero_requestURI_utils = require('../../MoneroUtils/monero_requestURI_utils')
 //
 let Currencies = require('../../CcyConversionRates/Currencies')
-let JSBigInt = require('../../Pyrex-core-js/cryptonote_utils/biginteger').BigInteger // important: grab defined export
+let JSBigInt = require('../../mypyrexcoin_libapp_js/Pyrex-core-js/cryptonote_utils/biginteger').BigInteger // important: grab defined export
 //
 let rateServiceDomainText = "cryptocompare.com" 
 //
@@ -385,8 +385,8 @@ class SendFundsView extends View
 			div.appendChild(fieldContainerLayer)
 			fieldContainerLayer.style.display = "none" // initial state
 			{
-				const labelLayer = commonComponents_forms.New_fieldTitle_labelLayer("MONERO ADDRESS", self.context)
-				labelLayer.style.marginTop = "6px" // instead of 15
+				const labelLayer = commonComponents_forms.New_fieldTitle_labelLayer("PYREXCOIN ADDRESS", self.context)
+				labelLayer.style.marginTop = "12px" // instead of 15
 				fieldContainerLayer.appendChild(labelLayer)
 				//
 				const valueLayer = commonComponents_forms.New_NonEditable_ValueDisplayLayer_BreakChar("", self.context) // zero val for now
@@ -442,9 +442,34 @@ class SendFundsView extends View
 		const div = commonComponents_forms.New_fieldContainerLayer(self.context)
 		div.style.display = "none" // initial
 		{
-			const labelLayer = commonComponents_forms.New_fieldTitle_labelLayer("PAYMENT ID", self.context)
-			labelLayer.style.marginTop = "4px"
-			div.appendChild(labelLayer)
+			const labelRowContainer = document.createElement("div")
+			labelRowContainer.style.margin = "0 0 8px 0" 
+			{
+				const labelLayer = commonComponents_forms.New_fieldTitle_labelLayer("ENTER PAYMENT ID OR&nbsp;", self.context)
+				labelLayer.style.marginTop = "0"
+				labelLayer.style.marginBottom = "0"
+				labelLayer.style.width = "auto"
+				labelLayer.style.display = "inline"
+				labelLayer.style.float = "none"
+				labelRowContainer.appendChild(labelLayer)
+				//
+				const generateButtonView = commonComponents_tables.New_clickableLinkButtonView(
+					"GENERATE ONE", 
+					self.context, 
+					function()
+					{
+						self.manualPaymentIDInputLayer.value = self.context.monero_utils.new_payment_id()
+					}
+				)
+				self.generateButtonView = generateButtonView
+				const generateButtonView_layer = generateButtonView.layer
+				generateButtonView_layer.style.margin = "0" 
+				generateButtonView_layer.style.display = "inline"
+				generateButtonView_layer.style.float = "none"
+				generateButtonView_layer.style.clear = "none"
+				labelRowContainer.appendChild(generateButtonView_layer)
+			}
+			div.appendChild(labelRowContainer)
 			//
 			const valueLayer = commonComponents_forms.New_fieldValue_textInputLayer(self.context, {
 				placeholderText: "A specific payment ID"
@@ -1356,6 +1381,7 @@ class SendFundsView extends View
 			self.prioritySelectLayer.disabled = false
 			//
 			self.manualPaymentIDInputLayer.disabled = false
+			self.generateButtonView.SetEnabled(true)
 			self.contactOrAddressPickerLayer.ContactPicker_inputLayer.disabled = false // making sure to re-enable 
 			//
 			if (self.useCamera_buttonView) {
@@ -1388,6 +1414,7 @@ class SendFundsView extends View
 			//
 			self.contactOrAddressPickerLayer.ContactPicker_inputLayer.disabled = true
 			self.manualPaymentIDInputLayer.disabled = true
+			self.generateButtonView.SetEnabled(false)
 		}
 		{
 			self._dismissValidationMessageLayer()
@@ -1404,14 +1431,6 @@ class SendFundsView extends View
 				_trampolineToReturnWithValidationErrorString("Please create a wallet to send Pyrexcoin.")
 				return
 			}
-			if (wallet.didFailToInitialize_flag) {
-				_trampolineToReturnWithValidationErrorString("Unable to load that wallet.")
-				return
-			}
-			if (wallet.didFailToBoot_flag) {
-				_trampolineToReturnWithValidationErrorString("Unable to log into that wallet.")
-				return
-			}
 		}
 		const sweeping = self.max_buttonView.isMAXToggledOn
 		const raw_amount_String = self.amountInputLayer.value
@@ -1422,7 +1441,7 @@ class SendFundsView extends View
 			}
 		}
 		let selected_ccySymbol = self.ccySelectLayer.Component_selected_ccySymbol()
-		var final_amount_Number = null;
+		var final_XMR_amount_Number = null;
 		if (!sweeping) {
 			let rawInput_amount_Number = +raw_amount_String // turns into Number, apparently
 			if (isNaN(rawInput_amount_Number)) {
@@ -1442,20 +1461,17 @@ class SendFundsView extends View
 				_trampolineToReturnWithValidationErrorString("The amount to send must be greater than zero.")
 				return
 			}
-			final_amount_Number = submittableMoneroAmountDouble
+			final_XMR_amount_Number = submittableMoneroAmountDouble
 		}
 		//
 		const hasPickedAContact = typeof self.pickedContact !== 'undefined' && self.pickedContact ? true : false
 		const enteredAddressValue = self.contactOrAddressPickerLayer.ContactPicker_inputLayer.value || ""
 		const enteredAddressValue_exists = enteredAddressValue !== ""
-		const notPickedContactBut_enteredAddressValue = !hasPickedAContact && enteredAddressValue_exists ? true : false
 		//
-		var target_address = null // to derive…
 		const resolvedAddress = self.resolvedAddress_valueLayer.innerHTML || ""
 		const resolvedAddress_exists = resolvedAddress !== "" // NOTE: it might be hidden, though!
 		const resolvedAddress_fieldIsVisible = self.resolvedAddress_containerLayer.style.display === "block"
 		//
-		var payment_id = null
 		const manuallyEnteredPaymentID = self.manualPaymentIDInputLayer.value || ""
 		const manuallyEnteredPaymentID_exists = manuallyEnteredPaymentID !== ""
 		const manuallyEnteredPaymentID_fieldIsVisible = self.manualPaymentIDInputLayer_containerLayer.style.display === "block" // kind of indirect, would be better to encapsulate show/hide & state, maybe
@@ -1474,115 +1490,6 @@ class SendFundsView extends View
 			// "detected" payment id. So the `hasPickedAContact` usage above yields slightly
 			// ambiguity in code and could be improved to encompass request uri pid "forcing"
 		}
-		if (hasPickedAContact) { // we have already re-resolved the payment_id
-			if (self.pickedContact.HasOpenAliasAddress() === true) {
-				payment_id = self.pickedContact.payment_id
-				if (!payment_id || typeof payment_id === 'undefined') {
-					// not throwing - it's ok if this payment has no payment id
-				}
-				// we can just use the cached_OAResolved_XMR_address because in order to have picked this
-				// contact and for the user to hit send, we'd need to have gone through an OA resolve (_didPickContact)
-				target_address = self.pickedContact.cached_OAResolved_XMR_address
-			} else if (self.pickedContact.HasIntegratedAddress() === true) {
-				target_address = self.pickedContact.address // whatever it may be
-				// ^ for integrated addrs, we don't want to extract the payment id and then use the integrated addr as well (TODO: unless we use fluffy's patch?)
-			} else { // non-integrated addr
-				target_address = self.pickedContact.address // whatever it may be
-				// ^ for integrated addrs, we don't want to extract the payment id and then use the integrated addr as well (unless we use fluffy's patch?)
-				payment_id = self.pickedContact.payment_id || null
-			}
-			if (!target_address || typeof target_address === 'undefined') {
-				_trampolineToReturnWithValidationErrorString("Contact unexpectedly lacked PYX address. This may be a bug.")
-				return
-			}
-		} else {
-			if (enteredAddressValue_exists === false) {
-				_trampolineToReturnWithValidationErrorString("Please specify the recipient of this transfer.")
-				return
-			}
-			// address
-			const is_enteredAddressValue_OAAddress = monero_openalias_utils.DoesStringContainPeriodChar_excludingAsXMRAddress_qualifyingAsPossibleOAAddress(enteredAddressValue)
-			var isEnteredValue_integratedAddress;
-			var isEnteredValue_subAddress;
-			if (is_enteredAddressValue_OAAddress !== true) {
-				// then it's an PYX addr of some kind
-				var address__decode_result; 
-				try {
-					address__decode_result = self.context.monero_utils.decode_address(enteredAddressValue, self.context.nettype)
-				} catch (e) {
-					console.warn("Couldn't decode as a Pyrexcoin address.", e)
-					_trampolineToReturnWithValidationErrorString("Please enter a valid Pyrexcoin address.") // this will re-enable submit btn etc
-					return // just return silently
-				}
-				target_address = enteredAddressValue // then this look like a valid PYX addr
-				if (address__decode_result.intPaymentId) {
-					isEnteredValue_integratedAddress = true
-				} else {
-					isEnteredValue_integratedAddress = false
-				}
-				isEnteredValue_subAddress = isEnteredValue_integratedAddress == false ? self.context.monero_utils.is_subaddress(enteredAddressValue, self.context.nettype) : false
-			} else { // then it /is/ an OA addr
-				isEnteredValue_integratedAddress = false // important to set
-				isEnteredValue_subAddress = false
-				if (!resolvedAddress_fieldIsVisible || !resolvedAddress_exists) {
-					_trampolineToReturnWithValidationErrorString("Couldn't resolve this OpenAlias address.")
-					return
-				}
-				target_address = resolvedAddress
-			}
-			// payment ID:
-			if (isEnteredValue_integratedAddress === true) {
-				payment_id = null
-			} else {
-				if (canUseManualPaymentID) {
-					if (resolvedPaymentID_fieldIsVisible) {
-						throw "canUseManualPaymentID but resolvedPaymentID_fieldIsVisible"
-					}
-					payment_id = manuallyEnteredPaymentID
-					if (monero_paymentID_utils.IsValidPaymentIDOrNoPaymentID(payment_id) === false) {
-						// TODO: set validation err on payment ID field (clear that err when we clear the payment ID field)
-						_trampolineToReturnWithValidationErrorString("Please enter a valid payment ID.")
-						return
-					}
-				} else if (resolvedPaymentID_fieldIsVisible) {
-					if (resolvedPaymentID_exists === false) {
-						throw "resolvedPaymentID_fieldIsVisible but !resolvedPaymentID_exists"
-					}
-					payment_id = resolvedPaymentID
-				}
-			}
-			if (isEnteredValue_subAddress && (payment_id && payment_id !== "")) {
-				_trampolineToReturnWithValidationErrorString("Payment IDs cannot be used with subaddresses.")
-				return
-			}
-
-		}
-		{ // final validation / sanitization / transformation
-			if (!target_address) {
-				_trampolineToReturnWithValidationErrorString("Unable to derive a target address for this transfer. This may be a bug.")
-				return
-			}
-			if (payment_id && payment_id != "") { // so, valid by this point
-				if (payment_id.length == 16) { // a short one
-					if (isEnteredValue_integratedAddress == true) {
-						throw "unexpected isEnteredValue_integratedAddress=true" // we'll assume user didn't enter an overriding integrated address
-					}
-					if (isEnteredValue_subAddress == true) { // should never be using a subaddress to make an integrated address
-						throw "unexpected isEnteredValue_subAddress=true"
-					}
-					// construct integrated address
-					let overwritten__target_address = target_address;
-					target_address = self.context.monero_utils.new__int_addr_from_addr_and_short_pid(
-						overwritten__target_address, // the monero one
-						payment_id, // short pid
-						self.context.nettype
-					)
-					//
-					payment_id = null // must now zero this or Send will throw a "pid must be blank with integrated addr"
-					isEnteredValue_integratedAddress = true // should update this
-				}
-			}
-		}
 
 		//
 		// now if using alternate display currency, be sure to ask for terms agreement before doing send
@@ -1594,7 +1501,7 @@ class SendFundsView extends View
 				let message = `Though ${selected_ccySymbol} is selected, the app will send ${Currencies.ccySymbolsByCcy.PYX}. (This is not an exchange.)`
 				message += `\n\n`
 				message += `Rate providers include ${rateServiceDomainText}. Neither accuracy or favorability are guaranteed. Use at your own risk.`
-				let ok_buttonTitle = `Agree and Send ${final_amount_Number} ${Currencies.ccySymbolsByCcy.PYX}`
+				let ok_buttonTitle = `Agree and Send ${final_XMR_amount_Number} ${Currencies.ccySymbolsByCcy.PYX}`
 				let cancel_buttonTitle = "Cancel"
 				self.context.windowDialogs.PresentQuestionAlertDialogWith(
 					title, 
@@ -1608,10 +1515,23 @@ class SendFundsView extends View
 						}
 						if (didChooseYes != true) {
 							// user canceled!
-							__currencyConversionRateAppliesAlert_cancel_action_op_fn()
+							_reEnableFormElements()
 							return
 						}
-						__currencyConversionRateAppliesAlert_ok_action_op_fn()
+						// must be sure to save state so alert is now not required until a DeleteEverything
+						self.context.settingsController.Set_settings_valuesByKey(
+							{
+								invisible_hasAgreedToTermsOfCalculatedEffectiveMoneroAmount: true
+							},
+							function(err)
+							{
+								if (err) {
+									throw err
+								}
+							}
+						)
+						// and of course proceed
+						__proceedTo_generateSendTransaction()
 					}
 				)
 				//
@@ -1619,7 +1539,7 @@ class SendFundsView extends View
 			} else {
 				// show alert… iff user agrees, write user has agreed to terms and proceed to branch, else bail
 				let title = `Confirm Amount`
-				let message = `Send ${final_amount_Number} ${Currencies.ccySymbolsByCcy.PYX}?`
+				let message = `Send ${final_XMR_amount_Number} ${Currencies.ccySymbolsByCcy.XMR}?`
 				let ok_buttonTitle = `Send`
 				let cancel_buttonTitle = "Cancel"
 				self.context.windowDialogs.PresentQuestionAlertDialogWith(
@@ -1634,10 +1554,10 @@ class SendFundsView extends View
 						}
 						if (didChooseYes != true) {
 							// user canceled!
-							__confirmAmountAlert_cancel_action_op_fn()
+							_reEnableFormElements()
 							return
 						}
-						__confirmAmountAlert_ok_action_op_fn()
+						__proceedTo_generateSendTransaction()
 					}
 				)
 				//
@@ -1645,82 +1565,48 @@ class SendFundsView extends View
 			}
 		}
 		// fall through
-		__proceedTo_executeSend()
+		__proceedTo_generateSendTransaction()
 		//
-		function __proceedTo_executeSend()
+		function __proceedTo_generateSendTransaction()
 		{
-			// unlike in iOS, the form is already disabled here in JS
-			__proceedTo_generateSendTransactionWith(
-				wallet, // FROM wallet
-				target_address, // TO address
-				payment_id
-			)
-		}
-		function __currencyConversionRateAppliesAlert_cancel_action_op_fn()
-		{
-			_reEnableFormElements()
-		}
-		function __currencyConversionRateAppliesAlert_ok_action_op_fn()
-		{ // must be sure to save state so alert is now not required until a DeleteEverything
-			self.context.settingsController.Set_settings_valuesByKey(
-				{
-					invisible_hasAgreedToTermsOfCalculatedEffectiveMoneroAmount: true
-				},
-				function(err)
-				{
-					if (err) {
-						throw err
-					}
-				}
-			)
-			// and of course proceed
-			__proceedTo_executeSend()
-		}
-		function __confirmAmountAlert_cancel_action_op_fn()
-		{
-			_reEnableFormElements()
-		}
-		function __confirmAmountAlert_ok_action_op_fn()
-		{
-			__proceedTo_executeSend()
-		}
-		function __proceedTo_generateSendTransactionWith(
-			sendFrom_wallet,
-			target_address,
-			payment_id
-		) {
-			const sendFrom_address = sendFrom_wallet.public_address
-			const priority = self._selected_simplePriority()
-			//
-			sendFrom_wallet.SendFunds(
-				target_address,
-				"" + final_amount_Number, // TODO: do away with JS-land number operations
-				sweeping,
-				payment_id,
-				priority, 
+			wallet.SendFunds(
+				enteredAddressValue, // currency-ready wallet address, but not an OpenAlias address (resolve before calling)
+				resolvedAddress,
+				manuallyEnteredPaymentID,
+				resolvedPaymentID,
+				hasPickedAContact,
+				resolvedAddress_fieldIsVisible,
+				manuallyEnteredPaymentID_fieldIsVisible,
+				resolvedPaymentID_fieldIsVisible,
+				//
+				hasPickedAContact ? self.pickedContact.payment_id : undefined,
+				hasPickedAContact ? self.pickedContact.cached_OAResolved_XMR_address : undefined,
+				hasPickedAContact ? self.pickedContact.HasOpenAliasAddress() : undefined,
+				hasPickedAContact ? self.pickedContact.address : undefined,
+				//
+				"" + final_XMR_amount_Number,
+				sweeping, // when true, amount will be ignored
+				self._selected_simplePriority(),
+				//
 				function(str) // preSuccess_nonTerminal_statusUpdate_fn
 				{
-					self.validationMessageLayer.SetValidationError(
-						str,
-						true/*wantsXButtonHidden*/
-					)
+					self.validationMessageLayer.SetValidationError(str, true/*wantsXButtonHidden*/)
 				},
 				function()
 				{ // canceled_fn
 					self._dismissValidationMessageLayer()
 					_reEnableFormElements()
 				},
-				function(
-					err,
-					mockedTransaction
-				) {
+				function(err, mockedTransaction)
+				{
+					console.log("err", err)
 					if (err) {
 						_trampolineToReturnWithValidationErrorString(typeof err === 'string' ? err : err.message)
 						return
 					}
 					{ // now present a mocked transaction details view, and see if we need to present an "Add Contact From Sent" screen based on whether they sent w/o using a contact
 						const stateCachedTransaction = wallet.New_StateCachedTransaction(mockedTransaction); // for display
-						self.pushDetailsViewFor_transaction(sendFrom_wallet, stateCachedTransaction);
+						self.pushDetailsViewFor_transaction(wallet, stateCachedTransaction);
 					}
 					{
 						const this_pickedContact = hasPickedAContact == true ? self.pickedContact : null
@@ -1746,7 +1632,7 @@ class SendFundsView extends View
 						setTimeout(
 							function()
 							{
-								sendFrom_wallet.hostPollingController._fetch_transactionHistory() // TODO: maybe fix up the API for this
+								wallet.hostPollingController._fetch_transactionHistory() // TODO: maybe fix up the API for this
 							}
 						)
 					}
@@ -2082,7 +1968,6 @@ class SendFundsView extends View
 			return
 		}
 		self.validationMessageLayer.ClearAndHideMessage()  // in case there was a parsing err etc displaying
-		self._clearForm()
 		//
 		const width = 256
 		const height = 256
@@ -2130,7 +2015,6 @@ class SendFundsView extends View
 		const self = this
 		//
 		self.validationMessageLayer.ClearAndHideMessage()  // in case there was a parsing err etc displaying
-		self._clearForm()
 		//
 		self.cancelAny_requestHandle_for_oaResolution()
 		//
@@ -2149,14 +2033,22 @@ class SendFundsView extends View
 	{
 		const self = this
 		{
+			var didSetAmountFromRequest = false
 			const amount = requestPayload.amount
 			if (amount !== null && typeof amount !== 'undefined' && amount !== "") {
+				didSetAmountFromRequest = true
 				self.amountInputLayer.value = amount
 			}
 			//
-			const amountCcy = requestPayload.amount_ccy || "PYX"
-			// TODO: validate amountCcy
-			self.ccySelectLayer.value = amountCcy // TODO: possibly to just do this?
+			const amountCcy = requestPayload.amount_ccy // TODO: validate amountCcy
+			if (amountCcy != null && typeof amountCcy !== 'undefined' && amountCcy !== "") {
+				if ((self.amountInputLayer.value == null || self.amountInputLayer.value == "" || typeof self.amountInputLayer.value == 'undefined')
+					|| didSetAmountFromRequest) { // so either the ccy and amount were on the request OR there was a ccy but the amount field was left empty by the user, i.e. we can assume it's ok to modify the ccy since there was one on the request
+					self.ccySelectLayer.value = amountCcy
+				}
+			} else {
+				// otherwise, just keep it as it is …… because if they set it to, e.g. CAD, and there's no ccy on the request, then they might accidentally send the same numerical value in XMR despite having wanted it to be in CAD
+			}
 			//
 			self.set_isSubmittable_needsUpdate()
 			self.set_effectiveAmountLabelLayer_needsUpdate()
@@ -2241,9 +2133,12 @@ class SendFundsView extends View
 				self._displayResolvedPaymentID(payment_id_orNull)
 			} else {
 				self._hideResolvedPaymentID() // jic
-				self.addPaymentIDButtonView.layer.style.display = "block" // show if hiding
-				self.manualPaymentIDInputLayer_containerLayer.style.display = "none" // hide if showing
-				self.manualPaymentIDInputLayer.value = "" 
+				if (typeof self.manualPaymentIDInputLayer.value === 'undefined' || !self.manualPaymentIDInputLayer.value) {
+					// if no pid already in the manual pid field, just be sure to reset the form to its proper state
+					self.addPaymentIDButtonView.layer.style.display = "block" // show if hiding
+					self.manualPaymentIDInputLayer_containerLayer.style.display = "none" // hide if showing
+					self.manualPaymentIDInputLayer.value = "" 
+				}
 			}
 		}
 	}

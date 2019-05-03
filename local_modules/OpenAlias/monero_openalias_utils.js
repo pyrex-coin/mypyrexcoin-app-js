@@ -28,7 +28,7 @@
 //
 "use strict"
 //
-const monero_config = require('../Pyrex-core-js/monero_utils/monero_config')
+const monero_config = require('../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_config')
 // ^-- TODO: remove this
 //
 const openalias_utils = require('./openalias_utils')

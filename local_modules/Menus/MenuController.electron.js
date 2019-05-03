@@ -319,10 +319,27 @@ class MenuController extends MenuController_Abstract
 					type: 'separator'
 				},
 				{
+					label: 'Help Center',
+					click: function(menuItem, browserWindow, event)
+					{
+						shell.openExternal('https://intercom.help/mymonero')
+					}
+				},
+				{
 					label: 'Support',
 					click: function(menuItem, browserWindow, event)
 					{
-						shell.openExternal('https://pyrexcoin.com/#/support')
+						shell.openExternal('https://pyrexcoin.com/?open_support=1')
+					}
+				},
+				{
+					type: "separator"
+				},
+				{
+					label: "Open User Data Folder…",
+					click: function(menuItem, browserWindow, event)
+					{
+						shell.openItem(self.context.app.getPath('userData'));
 					}
 				},
 				{
@@ -332,14 +349,14 @@ class MenuController extends MenuController_Abstract
 					label: 'Privacy Policy',
 					click: function(menuItem, browserWindow, event)
 					{
-						shell.openExternal('https://pyrexcoin.com/#/privacy-policy')
+						shell.openExternal('https://pyrexcoin.com/privacy')
 					}
 				},
 				{
 					label: 'Terms of Use',
 					click: function(menuItem, browserWindow, event)
 					{
-						shell.openExternal('https://pyrexcoin.com/#/terms')
+						shell.openExternal('https://pyrexcoin.com/terms')
 					}
 				}
 			]

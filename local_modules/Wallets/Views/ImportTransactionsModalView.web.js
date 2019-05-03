@@ -37,8 +37,8 @@ const commonComponents_tooltips = require('../../MMAppUICommonComponents/tooltip
 //
 const WalletsSelectView = require('../../WalletsList/Views/WalletsSelectView.web')
 //
-const monero_amount_format_utils = require('../../Pyrex-core-js/monero_utils/monero_amount_format_utils')
-const monero_sendingFunds_utils = require('../../Pyrex-core-js/monero_utils/monero_sendingFunds_utils')
+const monero_amount_format_utils = require('../../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_amount_format_utils')
+const monero_sendingFunds_utils = require('../../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_sendingFunds_utils')
 //
 class ImportTransactionsModalView extends View
 {
@@ -186,7 +186,7 @@ class ImportTransactionsModalView extends View
 		labelLayer.style.marginTop = "0"
 		{
 			self.amountInputLayer = pkg.valueLayer
-			self.amountInputLayer.disabled = true
+			self.amountInputLayer.readonly = true
 			self.__styleInputAsDisabled(self.amountInputLayer)
 		}
 		{
@@ -214,7 +214,7 @@ class ImportTransactionsModalView extends View
 		labelLayer.style.float = "left"
 		labelLayer.style.display = "block"
 		div.appendChild(labelLayer)
-		if (self.context.isRunningInBrowser != true) { // right
+		{ // right
 			// copying both html and plaintext
 			const buttonLayer = commonComponents_tables.New_copyButton_aLayer(
 				self.context,
@@ -243,7 +243,7 @@ class ImportTransactionsModalView extends View
 			}
 		)
 		self.addressInputLayer = layer
-		layer.disabled = true
+		layer.readonly = true
 		self.__styleInputAsDisabled(layer)
 		div.appendChild(layer)
 		self.form_containerLayer.appendChild(div)
@@ -259,7 +259,7 @@ class ImportTransactionsModalView extends View
 			labelLayer.style.float = "left"
 			labelLayer.style.display = "block"
 			div.appendChild(labelLayer)
-			if (self.context.isRunningInBrowser != true) { // right
+			{ // right
 				// copying both html and plaintext
 				const buttonLayer = commonComponents_tables.New_copyButton_aLayer(
 					self.context,
@@ -366,6 +366,7 @@ class ImportTransactionsModalView extends View
 		const self = this
 		const view = commonComponents_navigationBarButtons.New_RightSide_SaveButtonView(self.context)
 		self.rightBarButtonView = view
+		self.disable_submitButton()
 		const layer = view.layer
 		layer.innerHTML = "Send"
 		layer.addEventListener(
@@ -449,38 +450,40 @@ class ImportTransactionsModalView extends View
 		}
 		//
 		const wallet = self.walletSelectView.CurrentlySelectedRowItem
-		{
-			if (typeof wallet === 'undefined' || !wallet) {
-				_trampolineToReturnWithValidationErrorString("Please create a wallet to send Pyrexcoin.")
-				return
-			}
+		if (typeof wallet === 'undefined' || !wallet) {
+			_trampolineToReturnWithValidationErrorString("Please create a wallet to send Pyrexcoin.")
+			return
 		}
-		const target_address = self.addressInputLayer.value
-		const payment_id = self.manualPaymentIDInputLayer.value
-		const amount_Number = parseFloat(self.amountInputLayer.value)
-		const sendFrom_address = wallet.public_address
 		wallet.SendFunds(
-			target_address,
-			"" + amount_Number, // TODO: do away with JS-land number ops
-			false, // is not a sweep tx
-			payment_id,
+			self.addressInputLayer.value,
+			undefined, // resolvedAddress
+			self.manualPaymentIDInputLayer.value,
+			undefined, // resolvedPaymentID
+			false, // hasPickedAContact
+			false, // resolvedAddress_fieldIsVisible
+			true, // manuallyEnteredPaymentID_fieldIsVisible
+			false, // resolvedPaymentID_fieldIsVisible
+			//
+			undefined, // contact_payment_id
+			undefined, // cached_OAResolved_address
+			undefined, // contact_hasOpenAliasAddress
+			undefined, // contact_address
+			//
+			self.amountInputLayer.value,
+			false, // sweeping
 			monero_sendingFunds_utils.default_priority(),
+			//
 			function(str) // preSuccess_nonTerminal_statusUpdate_fn
 			{
-				self.validationMessageLayer.SetValidationError(
-					str,
-					true/*wantsXButtonHidden*/
-				)
+				self.validationMessageLayer.SetValidationError(str, true/*wantsXButtonHidden*/)
 			},
 			function()
 			{ // canceled_fn
 				self._dismissValidationMessageLayer()
 				_reEnableFormElements()
 			},
-			function(
-				err,
-				mockedTransaction
-			) {
+			function(err, mockedTransaction)
+			{
 				if (err) {
 					_trampolineToReturnWithValidationErrorString(typeof err === 'string' ? err : err.message)
 					return
@@ -536,8 +539,7 @@ class ImportTransactionsModalView extends View
 					payment_address, 
 					import_fee__JSBigInt, 
 					feeReceiptStatus
-				)
-				{
+				) {
 					self.requestHandle_for_importRequestInfoAndStatus = null // reset
 					//
 					if (err) {
@@ -549,17 +551,20 @@ class ImportTransactionsModalView extends View
 					{
 						self.informationalHeaderLayer.innerHTML = `This requires a one-time import fee of ${raw_formattedMoney} PYX`
 						//
-						const tooltipText = `Importing your wallet means the server will scan the entire Pyrexcoin blockchain for your wallet's past transactions, then stay up-to-date.<br/><br/>As this process places heavy load on the server, import is triggered by sending a fee with the specific payment ID below to the server at e.g. ${self.approximate_importOAAddress}.`
+						const tooltipText = `Importing your wallet means the server will scan the entire Pyrexcoin blockchain for your wallet's past transactions, then stay up-to-date.<br/><br/>As this process places heavy load on the server, import is triggered by sending a fee (e.g. from the original wallet) with the specific payment ID below to the server at e.g. ${self.approximate_importOAAddress}.`
 						const view = commonComponents_tooltips.New_TooltipSpawningButtonView(tooltipText, self.context)
 						const layer = view.layer
 						self.informationalHeaderLayer.appendChild(layer) // we can append straight to layer as we don't ever change its innerHTML after this
 					}
 					{
 						self.addressInputLayer.value = payment_address
-						self.copyButtonLayerFor_addressInput.Component_SetValue(payment_address)
-						//
+						if (typeof self.copyButtonLayerFor_addressInput !== 'undefined' && self.copyButtonLayerFor_addressInput) {
+							self.copyButtonLayerFor_addressInput.Component_SetValue(payment_address)
+						}
 						self.manualPaymentIDInputLayer.value = payment_id
-						self.copyButtonLayerFor_paymentID.Component_SetValue(payment_id)
+						if (typeof self.copyButtonLayerFor_paymentID !== 'undefined' && self.copyButtonLayerFor_paymentID) {
+							self.copyButtonLayerFor_paymentID.Component_SetValue(payment_id)
+						}
 						//
 						var amountStr = raw_formattedMoney
 						if (amountStr.indexOf(".") == -1) {
@@ -572,7 +577,7 @@ class ImportTransactionsModalView extends View
 						self.amountInputLayer.value = amountStr
 					}
 					{
-						// const command = `transfer 3 import.mymonero.com ${import_fee__JSBigInt} ${payment_id}`
+						// const command = `transfer 3 import.pyrexcoin.com ${import_fee__JSBigInt} ${payment_id}`
 						const tooltipText = "For convenience you may send the fee from MyPyrexcoin here, or the official CLI or GUI tools, or any other Pyrexcoin wallet.<br/><br/>Please be sure to use the exact payment ID below, so the server knows which wallet to import."
 						const view = commonComponents_tooltips.New_TooltipSpawningButtonView(tooltipText, self.context)
 						const layer = view.layer

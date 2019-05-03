@@ -28,80 +28,62 @@
 //
 "use strict"
 //
-const BackgroundTaskExecutor = require('../Concurrency/BackgroundTaskExecutor.electron')
+const FilesystemUI_Abstract = require('./FilesystemUI_Abstract')
 //
-class BackgroundResponseParser extends BackgroundTaskExecutor
+class FilesytemUI extends FilesystemUI_Abstract
 {
 	constructor(options, context)
 	{
-		options = options || {}
-		options.absolutePathToChildProcessSourceFile = __dirname + '/./BackgroundResponseParser.electron.child.js'
-		//
-		const electron = require('electron')
-		const app = electron.app || electron.remote.app
-		const forReporting_appVersion = app.getVersion()
-		options.argsForChild = [ forReporting_appVersion ]
-		//
 		super(options, context)
 	}
 	//
-	// Runtime - Accessors - Interface
-	Parsed_AddressInfo(
-		data,
-		address,
-		view_key__private,
-		spend_key__public,
-		spend_key__private,
-		fn //: (err?, returnValuesByKey?) -> Void
+	//
+	// Runtime - Accessors - Lookups - IPC - Main window
+	//
+	
+	//
+	//
+	// Runtime - Imperatives - Dialogs - Save
+	PresentDialogToSaveBase64ImageStringAsImageFile(
+		imgData_base64String,
+		title,
+		defaultFilename_sansExt,
+		fn // (err?) -> Void
 	) {
-		const self = this
-		self.executeBackgroundTaskNamed(
-			'Parsed_AddressInfo',
-			fn, // fn goes as second arg
-			[
-				data,
-				address,
-				view_key__private,
-				spend_key__public,
-				spend_key__private,
-			]
-		)
+		alert("Code fault: PresentDialogToSaveBase64ImageStringAsImageFile not yet implemented")
 	}
-	Parsed_AddressTransactions(
-		data,
-		address,
-		view_key__private,
-		spend_key__public,
-		spend_key__private,
-		fn //: (err?, returnValuesByKey?) -> Void
+	PresentDialogToSaveTextFile(
+		contentString, 
+		title,
+		defaultFilename_sansExt,
+		ext,
+		fn,
+		optl_uriContentPrefix
 	) {
-		const self = this
-		self.executeBackgroundTaskNamed(
-			'Parsed_AddressTransactions',
-			fn, // fn goes as second arg
-			[
-				data,
-				address,
-				view_key__private,
-				spend_key__public,
-				spend_key__private,
-			]
-		)
+		if (typeof optl_uriContentPrefix == 'undefined' || !optl_uriContentPrefix) {
+			throw "PresentDialogToSaveTextFile expected optl_uriContentPrefix"
+		}
+		const uriContent = optl_uriContentPrefix + contentString;
+		var encodedUri = encodeURI(uriContent);
+		var link = document.createElement("a");
+		link.style.visibility = "hidden"
+		link.setAttribute("href", encodedUri);
+		link.setAttribute("download", `${defaultFilename_sansExt}.${ext}`);
+		document.body.appendChild(link); // Required for FF
+		//
+		link.click(); 
+		//
+		link.parentNode.removeChild(link);
 	}
 	//
-	// Imperatives
-	DeleteManagedKeyImagesForWalletWith(
-		address,
-		fn //: (err?, dummyval) -> Void
+	//
+	// Runtime - Imperatives - Dialogs - Open
+	//
+	PresentDialogToOpenOneImageFile(
+		title,
+		fn // (err?, absoluteFilePath?) -> Void
 	) {
-		const self = this
-		self.executeBackgroundTaskNamed(
-			'DeleteManagedKeyImagesForWalletWith',
-			fn, // fn goes as second arg
-			[
-				address
-			]
-		)
+		alert("Code fault: PresentDialogToOpenOneImageFile not yet implemented")
 	}
 }
-module.exports = BackgroundResponseParser
+module.exports = FilesytemUI

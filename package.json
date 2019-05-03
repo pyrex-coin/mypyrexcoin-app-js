@@ -1,8 +1,8 @@
 {
-  "name": "MyPyrexcoin",
+  "name": "mypyrexcoin",
   "author": "Pyrex-coin",
   "description": "The simplest way to use Pyrexcoin",
-  "version": "1.1.6",
+  "version": "1.1.11",
   "license": "SEE LICENSE IN LICENSE.txt",
   "repository": "https://github.com/pyrex-coin/mypyrexcoin-app-js.git",
   "private": false,
@@ -11,7 +11,7 @@
     "start": "electron ./local_modules/electron_main/electron_main.js",
     "start-dev": "NODE_ENV=development electron ./local_modules/electron_main/electron_main.js",
     "dist-m": "CSC_IDENTITY_AUTO_DISCOVERY=false CSC_NAME=\"Pyrex-coin Pty Ltd\" electron-builder -m -p never",
-    "dist-w": "electron-builder -w -p never",
+    "dist-w": "electron-builder -w -p never --ia32 --x64",
     "dist-l": "electron-builder -l -p never",
     "postinstall": "electron-builder install-app-deps"
   },
@@ -37,12 +37,23 @@
       "!**/local_modules/**/package-lock.json",
       "!**/tests/*",
       "!**/*.spec.js",
-      "!local_modules/Pyrex-core-js/index.js",
-      "!local_modules/Pyrex-core-js/monero_utils/MyMoneroCoreCpp_ASMJS.js",
-      "!local_modules/Pyrex-core-js/monero_utils/MyMoneroCoreCpp_ASMJS.asm.js",
-      "!local_modules/Pyrex-core-js/tests/**",
-      "!local_modules/Pyrex-core-js/wallaby*",
-      "!local_modules/Pyrex-core-js/src/**",
+      "!local_modules/Pasteboard/Vendor/clipboard.min.js",
+      "!local_modules/mypyrexcoin_libapp_js/libapp_js/MyMoneroLibAppCpp_ASMJS.js",
+      "!local_modules/mypyrexcoin_libapp_js/libapp_js/MyMoneroLibAppCpp_ASMJS.asm.js",
+      "!local_modules/mypyrexcoin_libapp_js/build",
+      "!local_modules/mypyrexcoin_libapp_js/tests/**",
+      "!local_modules/mypyrexcoin_libapp_js/src/**",
+      "!local_modules/mypyrexcoin_libapp_js/Pyrex-core-js/index.js",
+      "!local_modules/mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/MyMoneroCoreCpp_ASMJS.js",
+      "!local_modules/mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/MyMoneroCoreCpp_ASMJS.asm.js",
+      "!local_modules/mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/MyMoneroCoreCpp_WASM.js",
+      "!local_modules/mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/MyMoneroCoreCpp_WASM.wasm",
+      "!local_modules/mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/MyMoneroCoreBridge.js",
+      "!local_modules/mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/MyMoneroCoreBridgeClass.js",
+      "!local_modules/mypyrexcoin_libapp_js/Pyrex-core-js/tests/**",
+      "!local_modules/mypyrexcoin_libapp_js/Pyrex-core-js/wallaby*",
+      "!local_modules/mypyrexcoin_libapp_js/Pyrex-core-js/src/**",
+      "!local_modules/mypyrexcoin_libapp_js/Pyrex-core-js/build",
       "!**/*.browser.*",
       "!**/favicon*.png",
       "!**/favicon*.ico",
@@ -79,11 +90,17 @@
       "target": [
         "nsis"
       ],
+      "artifactName": "${productName}-${version}.${ext}",
       "legalTrademarks": "Copyright © 2014-2019 MyMonero.",
-      "publisherName": "Pyrexcoin Ltd."
+      "publisherName": null,
+      "verifyUpdateCodeSignature": false
     },
     "nsis": {
-      "perMachine": true
+      "perMachine": true,
+      "artifactName": "${productName}-${version}.${ext}"
+    },
+    "nsisWeb": {
+        "artifactName": "${productName}-${version}.${ext}"
     },
     "linux": {
       "icon": "icon.icns",
@@ -123,8 +140,8 @@
     "babel-core": "6.26.3",
     "babel-loader": "8.0.2",
     "babel-minify": "0.4.3",
-    "electron": "3.0.3",
-    "electron-builder": "20.38.3",
+    "electron": "4.0.2",
+    "electron-builder": "20.38.5",
     "electron-packager": "13.0.1",
     "eslint": "5.6.0",
     "request": "2.88.0",

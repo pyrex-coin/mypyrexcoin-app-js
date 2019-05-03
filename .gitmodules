@@ -1,3 +1,3 @@
-[submodule "local_modules/Pyrex-core-js"]
-	path = local_modules/Pyrex-core-js
-	url = https://github.com/pyrex-coin/Pyrex-core-js.git
+[submodule "local_modules/mypyrexcoin-libapp-js"]
+	path = local_modules/mypyrexcoin-libapp-js
+	url = https://github.com/pyrex-coin/mypyrexcoin-libapp-js

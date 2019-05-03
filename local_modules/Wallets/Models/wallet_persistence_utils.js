@@ -28,7 +28,7 @@
 //
 //
 const persistable_object_utils = require('../../DocumentPersister/persistable_object_utils')
-const JSBigInt = require('../../Pyrex-core-js/cryptonote_utils/biginteger').BigInteger
+const JSBigInt = require('../../mypyrexcoin_libapp_js/Pyrex-core-js/cryptonote_utils/biginteger').BigInteger
 //
 const CollectionName = "Wallets"
 exports.CollectionName = CollectionName

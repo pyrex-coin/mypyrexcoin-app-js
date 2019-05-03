@@ -35,7 +35,7 @@ const Emojis = require('../../Emoji/emoji_set').Emojis
 const persistable_object_utils = require('../../DocumentPersister/persistable_object_utils')
 const contact_persistence_utils = require('./contact_persistence_utils')
 //
-const monero_paymentID_utils = require('../../Pyrex-core-js/monero_utils/monero_paymentID_utils')
+const monero_paymentID_utils = require('../../mypyrexcoin_libapp_js/Pyrex-core-js/monero_utils/monero_paymentID_utils')
 //
 const monero_requestURI_utils = require('../../MoneroUtils/monero_requestURI_utils')
 const QRCode = require('qrcode')

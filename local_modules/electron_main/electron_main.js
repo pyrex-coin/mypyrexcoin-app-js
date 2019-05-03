@@ -59,6 +59,28 @@ const {/*crashReporter, */app} = require('electron')
 	const appId = "com.pyrexcoin.mypyrexcoin-desktop" // aka bundle id; NOTE: cannot currently access package.json in production pkging (cause of asar?… needs a little work)
 	app.setAppUserModelId(appId) // for Windows, primarily; before any windows set up
 }
+const { dialog } = require("electron")
+process.on(
+	'uncaughtException', 
+	function(error)
+	{
+		var errStr = "Please let us know of ";
+		if (error) {
+			const error_toString = error.toString()
+			errStr += "the following error message as it could be a bug:\n\n"+ error_toString
+			if (error.stack) {
+				errStr += "\n\n" + error.stack
+			}
+			if (error_toString.indexOf("electron-updater") !== -1) {
+				console.error(errStr)
+				return // avoid doing a dialog for this, since electron-updater emits an exception for 'no internet' (a bit excessive), and because we already show errors for those emitted in AppUpdatesController.electron.main.js
+			}
+		} else {
+			errStr += "this issue as it could be a bug."
+		}
+		dialog.showErrorBox("Application Error", errStr);
+	}
+)
 { // Application
 	const context = require('./electron_main_context').NewHydratedContext(app) // electron app can be accessed at context.app; context is injected into instances of classes described in ./electron_main_context.js
 	module.exports = context

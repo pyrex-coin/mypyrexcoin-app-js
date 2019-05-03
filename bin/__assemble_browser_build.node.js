@@ -43,6 +43,20 @@ const doNotCopyOrEnterFilepathsMatching =
 	/^electron_/,
 	/Pyrex-core-js\/build/, // obviously do not want anything within this
 	/Pyrex-core-js\/node_modules/, // all of these are dev dependencies, so we don't want them
+	/mypyrexcoin_libapp_js\/build/, // obviously do not want anything within this
+	/mypyrexcoin_libapp_js\/node_modules/, // all of these are dev dependencies, so we don't want them
+	/mypyrexcoin_libapp_js\/tests/,
+	/mypyrexcoin_libapp_js\/src/,
+	/Pyrex-core-js\/index\.js/,
+	/MyMoneroCoreCpp_ASMJS\.js/,
+	/MyMoneroCoreCpp_ASMJS\.asm\.js/,
+	/MyMoneroCoreCpp_WASM\.js/,
+	/MyMoneroCoreCpp_WASM\.wasm/,
+	/MyMoneroCoreBridge\.js/,
+	/MyMoneroCoreBridgeClass\.js/,
+	/Pyrex-core-js\/tests/,
+	/Pyrex-core-js\/wallaby/,
+	/Pyrex-core-js\/src/,
 	/node_modules\/electron/, // no reason we'd want this
 	/LICENSE\.txt/,
 	/README\.md/,

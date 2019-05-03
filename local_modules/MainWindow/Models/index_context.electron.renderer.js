@@ -84,7 +84,7 @@ var context_object_instantiation_descriptions =
 		options: {}
 	},
 	{
-		module_path: __dirname + "/../../HostedMoneroAPIClient/BackgroundResponseParser.electron",
+		module_path: __dirname + "/../../HostedMoneroAPIClient/BackgroundResponseParser.electron.renderer",
 		instance_key: "backgroundAPIResponseParser",
 		options: {}
 	},
@@ -165,7 +165,7 @@ function NewHydratedContext(
 ) {
 	var initialContext =
 	{
-		nettype: require('../../Pyrex-core-js/cryptonote_utils/nettype').network_type.MAINNET, // critical setting
+		nettype: require('../../mypyrexcoin_libapp_js/Pyrex-core-js/cryptonote_utils/nettype').network_type.MAINNET, // critical setting
 		app: app,
 		menuController: menuController,
 		appUpdatesController: appUpdatesController,
