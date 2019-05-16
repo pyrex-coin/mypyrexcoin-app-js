@@ -1539,7 +1539,7 @@ class SendFundsView extends View
 			} else {
 				// show alert… iff user agrees, write user has agreed to terms and proceed to branch, else bail
 				let title = `Confirm Amount`
-				let message = `Send ${final_XMR_amount_Number} ${Currencies.ccySymbolsByCcy.XMR}?`
+				let message = `Send ${final_XMR_amount_Number} ${Currencies.ccySymbolsByCcy.PYX}?`
 				let ok_buttonTitle = `Send`
 				let cancel_buttonTitle = "Cancel"
 				self.context.windowDialogs.PresentQuestionAlertDialogWith(
